@@ -1,63 +1,63 @@
 
-simulate_zombies <- function(delta, zeta, beta, alpha, pi, time_horizon, dt){
+simulate_zombies <- function(delta, zeta, beta, alpha, pi, rho, time_horizon, dt){
   
   # delta: background (non-zombie related) death rate
   # zeta: zombie resurrection rate
   # beta: zombie transmission rate
   # alpha: zombie destruction rate
   # pi: birth rate
+  # rho: latent infection rate
   # time_horizon: length of time to run dynamics
   # dt: time-step for numerical solutions
   
-  N <- 1000             # total population
+  N <- 500             # total population
   n <- time_horizon/dt
-  c <- 0.1              # human/zombie contact probability
+  t <- seq(0, time_horizon, dt)
   
-  s <- rep(0, n+1)
-  z <- rep(0, n+1)
-  r <- rep(0, n+1)
+  S <- rep(0, n+1)
+  I <- rep(0, n+1)
+  Z <- rep(0, n+1)
+  R <- rep(0, n+1)
   
   # Initial conditions
-  z[1] <- 10
-  s[1] <- N - z[1]
-  r[1] <- 0
-  t <- seq(0, time_horizon, dt)
+  S[1] <- N -1
+  Z[1] <- 1
   
   # Define model dynamics (ODEs) and solve by Euler's method
   for (i in 1:n){
     
-    s[i+1] <- s[i] + dt*(pi*s[i] - beta*s[i]*z[i]*c - delta*s[i])
-    z[i+1] <- z[i] + dt*((beta - alpha)*s[i]*z[i]*c + zeta*r[i])
-    r[i+1] <- r[i] + dt*(alpha*s[i]*z[i]*c + delta*s[i] - zeta*r[i])
-    
-    if (s[i] < 0){
-      s[i:n+1] <- 0
-      for (j in i:n){
-        z[j+1] <- z[j] + dt*(zeta*r[j])
-        r[j+1] <- r[j] + dt*(-zeta*r[j])
-        if (r[j] < 0){
-          r[j:n+1] <- 0
-          z[j:n+1] <- z[j]
-        }
-      }
-      break
+    if (S[i] < 0){
+      S[i] = 0
+    }
+    if (I[i] < 0){
+      I[i] = 0
+    }
+    if (Z[i] < 0){
+      Z[i] = 0
+    }
+    if (R[i] < 0){
+      R[i] = 0
     }
     
-    if (z[i] < 0){
-      z[i+1] <- dt(zeta*r[i])
-      s[i+1] <- s[i] + dt((pi - delta)*s[i])
-      r[i+1] <- r[i] + dt(delta*s[i] - zeta*r[i])
-    }
-    if (r[i] < 0){
-      z[i+1] <- z[i] + dt*((beta - alpha)*s[i]*z[i]*c)
-      r[i+1] <- dt*(alpha*s[i]*z[i]*c + delta*s[i])
-      break
-    }
+    S[i+1] <- S[i] + dt*(pi*S[i] - beta*S[i]*Z[i] - delta*S[i])
+    I[i+1] <- I[i] + dt*(beta*S[i]*Z[i] - rho*I[i] - delta*I[i])
+    Z[i+1] <- Z[i] + dt*(rho*I[i] - alpha*S[i]*Z[i] + zeta*R[i])
+    R[i+1] <- R[i] + dt*(alpha*S[i]*Z[i] + delta*(S[i]+I[i]) - zeta*R[i])
   }
+
   
-  return(list('s'=s, 'z'=z, 'r'=r, 't'=t))
+  return(list('S'=S, 'I'=I, 'Z'=Z, 'R'=R, 't'=t))
 }
 
-epidemic <- simulate_zombies(0.01, 0.05, 0.3, 0.4, 0.02, 50, 0.1)
-plot(epidemic$t, epidemic$s, ylim=c(0,1200), type='l', col='blue')
-lines(epidemic$t, epidemic$z, col='red')
+epidemic <- simulate_zombies(delta=0.0001, zeta=0.0001, beta=0.0095, alpha=0.0005, 
+                             pi=0.0001, rho=0.05,  time_horizon=25, dt=0.05)
+
+plot(epidemic$t, floor(epidemic$S), ylim=c(0,500), type='l', col='blue', lwd=2)
+lines(epidemic$t, floor(epidemic$Z), col='red', lwd=2)
+legend('topright', legend=c('Susceptibles', 'Zombies'), col = c('blue', 'red'), lty=1, lwd=2)
+
+
+  t <- 1:time_horizon
+  s <- s[(1/dt)*(1:time_horizon)]
+  z <- z[(1/dt)*(1:time_horizon)]
+  r <- r[(1/dt)*(1:time_horizon)]
