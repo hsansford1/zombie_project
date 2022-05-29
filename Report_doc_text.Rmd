@@ -1,6 +1,6 @@
 ---
 title: "SMC"
-author: "Dan Milner"
+author: "Hannah Sansford, Harry Tata, Dan Milner"
 date: "26/05/2022"
 output: pdf_document
 ---
