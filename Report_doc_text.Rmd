@@ -20,11 +20,7 @@ library(readr)
 (A description of the gap in our knowledge that this study is designed to fill) Statistical methods capable of dealing effectively with highly non-linear systems are not a trivial matter. The simulation-based methods, Sequential Monte Carlo (SMC), Approximate Bayesian Computation (ABC) and Synthetic Likelihood (SL), offer a solution through estimating a posterior via simulated data sets based on sample parameters taken from the prior distribution. Utilising the computational efficiency of SMC, this report aims to compute a 4-Class zombie apocalypse model by approximating the posterior using a progressively decreasing sequence of tolerances. 
 
 
-# Method and Materials
-
-## Data
-
-## Model
+# Model
 We consider four basic classes:
 * Susceptible ($S$)
 * Infected ($I$)
