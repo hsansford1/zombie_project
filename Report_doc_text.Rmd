@@ -1,0 +1,51 @@
+---
+title: "SMC"
+author: "Dan Milner"
+date: "26/05/2022"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(dpi=300, fig.width=5)
+
+library(readr)
+```
+# Abstract
+
+# Introduction
+(General background info)Chaotic dynamic systems commensurate with ecology and epidemiology challenge conventional methods of statistical inference as oftentimes they have an intractable likelihood. It is unlikely that any natural/environmental process under investigation can be captured without error and all natural/environmental systems invariably suffer process stochasticity. Consequently, model complexity increases in a non-trivial way as each realisation of the model is essentially unique. For chaotic models this is especially true as process stochasticity induces divergence of paths generated using identical parameters and starting from the sme initial conditions (Fasiolo *et al*, 2016).
+
+(Specific background Info) Zombies, particularly when instigating an apocalypse, exhibit just such chaotic behavior. Their aim is to kill, eat and infect people via a bit/bites, which leave an open wound with the zombie's saliva in and around it. This bodily fluid mixes with the blood, infecting the (previously susceptible) bitten individual and turns them into a zombie. Zombie apocalypses have been modeled on a number of previous occasions (Munz *et al*, ) but given the seriousness of such a situation it is important that no stone is left unturned. 
+
+(A description of the gap in our knowledge that this study is designed to fill) Statistical methods capable of dealing effectively with highly non-linear systems are not a trivial matter. The simulation-based methods, Sequential Monte Carlo (SMC), Approximate Bayesian Computation (ABC) and Synthetic Likelihood (SL), offer a solution through estimating a posterior via simulated data sets based on sample parameters taken from the prior distribution. Utilising the computational efficiency of SMC, this report aims to compute a 3 and 4-Class zombie apocalypse model by approximating the posterior using a progressively decreasing sequence of tolerances. 
+
+
+# Method and Materials
+
+## Data
+
+## Models
+
+### Model 1 - 3-Class
+We consider three basic classes:
+* Susceptible ($S$)
+* Zombie ($Z$)
+* Removed ($R$)
+
+Susceptibles class can become deceased through 'natural' causes (parameter $\delta$). Removed class are those that have died either through a zombie attack or from natural causes. If a human has died in a zombie attack they can resurrect and become a zombie (parameter $\zeta$). A Susceptible can become a zombie through transmission, i.e. an encounter with a zombie (parameter $\beta$). Zombies can, therefore, only come from two sources; either they are resurrected from the newly deceased or they are a susceptible that has become infected.
+
+The birth rate of the human population is assumed to constant, $\Pi$. Zombies can be defeated by removing the head or destroying the brain (parameter $\alpha$). 
+
+The 3-Class model is thus:
+
+\[S' = \Pi - \beta SZ - \delta S\]
+\[Z' = \beta SZ + \zeta R - \alpha SZ\]
+\[R' = \delta S + \alpha SZ - \zeta R\]
+
+### Model 2
+
+
+
+# Discussion
+
+# Conclusion
