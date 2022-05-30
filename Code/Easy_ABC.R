@@ -38,21 +38,52 @@ ABC_rej$computime
 histogram_plot(ABC_rej$param, 'Posterior distributions from Rejection ABC')
 
 # Plot accepted sampled trajectories
-plot_trajectories(true_epidemic, t, ABC_rej, title='Accepted simulations from rejection ABC algorithm')
+plot_trajectories(true_epidemic, t, ABC_rej$param, title='Accepted simulations from rejection ABC algorithm')
 
+# plot mean and 90% confidence bands
+plot_conf_bands(true_epidemic, t, ABC_rej, title='Mean and confidence band from rejection ABC')
 
+# plot mean +/- one standard deviation
+plot_sd_bands(true_epidemic, t, abc_rej, title='Mean and standard deviation from rejection ABC')
+
+# use features of `abc` package
 parnames <- c('delta', 'zeta', 'beta', 'alpha', 'pi', 'rho')
 colnames(ABC_rej$param) <- parnames
 abc_rej <- abc(true_epidemic, ABC_rej$param, ABC_rej$stats, tol=1, method="rejection")
 
-# plot mean and 90% confidence bands
-plot_conf_bands(true_epidemic, t, abc_rej, title='Mean and confidence band from rejection ABC')
-
-# plot mean +/- one standard deviation
-plot_sd_bands(true_epidemic, t, abc_rej, title='Mean and standard deviation from rejection ABC')
+# epsilon values for accepted simulations
+abc_rej$dist
 
 #------------------------------------------------------------------------------
 # SEQUENTIAL ABC (ABC-SMC)
 #--------------------------------------------------------------------------
 
-ABC_SMC <- ABC_sequential()
+#sequence of tolerance levels:
+tolerance <- c(50, 20, 5, 2)
+#number of simulations to obtain below the tolerance level at each iteration:
+n <- 100
+
+ABC_Beaumont <- ABC_sequential(method="Beaumont", model=simulate_zombies, prior=priors,
+                              nb_simul=n, summary_stat_target=true_epidemic,
+                              tolerance_tab=tolerance, progress_bar = TRUE, inside_prior = TRUE)
+
+ABC_Beaumont$nsim # The number of model simulations performed.
+ABC_Beaumont$computime # The computing time to perform the simulations
+ABC_Beaumont$epsilon
+
+# Take the 25 best simulations
+dist <- sqrt(apply((ABC_Beaumont$stats- true_epidemic)^2, 1, sum))
+idx <-sort(dist, index.return=TRUE)$ix
+acc_params_beaumont <- ABC_Beaumont$param[idx[1:25],]
+
+# plot posterior distributions
+histogram_plot(ABC_Beaumont$param, 'Posterior distributions from PMC-ABC')
+
+# Plot accepted sampled trajectories
+plot_trajectories(true_epidemic, t, acc_params_beaumont, title='Accepted simulations from PMC-ABC algorithm')
+
+# plot mean and 90% confidence bands
+plot_conf_bands(true_epidemic, t, ABC_Beaumont, title='Mean and confidence band from PMC-ABC')
+
+# plot mean +/- one standard deviation
+plot_sd_bands(true_epidemic, t, ABC_Beaumont, title='Mean and standard deviation from PMC-ABC')
