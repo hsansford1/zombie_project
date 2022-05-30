@@ -26,13 +26,13 @@ histogram_plot <- function(param, title){
 
 
 ## Plot accepted sampled trajectories
-plot_trajectories <- function(true_epidemic, t,  ABC_output, title){
+plot_trajectories <- function(true_epidemic, t,  accepted_params, title){
   par(mfrow=c(1,1))
   plot(t, floor(true_epidemic[1:501]), ylim=c(0,500), type='l', col=colours[2], lwd=3,
        ylab='Population Values', xlab='Time', main=title)
   lines(t, floor(true_epidemic[502:1002]), col=colours[3], lwd=3)
   for (i in 1:225){
-    rej_epidemic <- simulate_zombies(ABC_output$param[i,])
+    rej_epidemic <- simulate_zombies(accepted_params[i,])
     lines(t, floor(rej_epidemic[1:501]), col=alpha(colours[2], 0.4), lwd=1)
     lines(t, floor(rej_epidemic[502:1002]), col=alpha(colours[3], 0.4), lwd=1)
   }

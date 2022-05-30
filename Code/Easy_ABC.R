@@ -49,7 +49,10 @@ abc_rej <- abc(true_epidemic, ABC_rej$param, ABC_rej$stats, tol=1, method="rejec
 plot_conf_bands(true_epidemic, t, abc_rej, title='Mean and confidence band from rejection ABC')
 
 # plot mean +/- one standard deviation
-plot_conf_bands2(true_epidemic, t, abc_rej, title='Mean and standard deviation from rejection ABC')
+plot_sd_bands(true_epidemic, t, abc_rej, title='Mean and standard deviation from rejection ABC')
 
+#------------------------------------------------------------------------------
+# SEQUENTIAL ABC (ABC-SMC)
+#--------------------------------------------------------------------------
 
-
+ABC_SMC <- ABC_sequential()
