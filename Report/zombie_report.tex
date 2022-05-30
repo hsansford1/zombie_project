@@ -61,7 +61,7 @@ The 4-Class model is thus:
 
 Likelihood-free inference methods are convenient for complex models, such as Epidemic models, where we do not have an explicit expression for the likelihood. In approximate Bayesian computation (ABC), simulation under the implicit model replaces computation of the likelihood. One can use simulations from the model for different parameter values to compare the simulated datasets with the observed data. These simulations are increasingly being used as training datasets for machine learning methods including deep neural networks \citep{RN6} and random forests \citep{RN8}. 
 
-The use of ABC first became popular in the field of population genetics, where simulation from a range of models is possible, but the likelihood is intractable for realistic sized datasets. \cite{RN57} were the first to use ABC, conducting inference on human demographic history. The method has now been applied in various subject areas including systems biology \citep{RN60}, climate modelling \citep{RN61}, astronomy \citep{RN62} and epidemiology \citep{RN59,RN10}.
+The use of ABC first became popular in the field of population genetics, where simulation from a range of models is possible, but the likelihood is intractable for realistic sized datasets. \cite{RN57} were the first to use ABC, conducting inference on human demographic history. The method has now been applied in various subject areas including systems biology \citep{RN60}, climate modelling \citep{RN61}, astronomy \citep{RN62} and epidemiology \citep{RN10}.
 
 The goal of ABC is to find a posterior distribution for the parameters of the implicit model, explaining the complex and potentially high-dimensional dataset. The method is based on Bayesian statistics: updating our prior beliefs about the model parameters, where $\pi(\theta)$ is the prior, using the information from our simulations. Suppose the dataset consists of $n$ observations $y_{obs} = (y_{obs,1}, ..., y_{obs,n})$. A typical ABC procedure would involve mapping the observations to a lower dimensional set of summary statistics, $s(y)$. The posterior is then proportional to the following elements
 \begin{equation}
@@ -70,6 +70,34 @@ p_{\epsilon}(\theta, s|s_{obs}) \propto \pi(\theta)f_n(s|\theta)K_{\epsilon}(\|s
 where $f_n(s|\theta)$ is the implicit density of the model, $K_{\epsilon}(x)$ is a kernel function with tolerance $\epsilon$, and $\| \cdot \|$ is a distance metric \citep{RN2}. The kernel function enables us to include in our posterior density the parameter values that best approximate the observations. This idea of estimating the likelihood of parameters using simulations that are `close' to the observed data dates back at least as far as \cite{RN56}.
 
 As the tolerance value $\epsilon$ tends to zero, the simulations we accept are closer to the true data and the approximate posterior becomes closer to its true distribution. Unfortunately, in order to simulate the same number of points at a smaller tolerance level often requires many more simulations, and the simplest algorithms can quickly become computationally inefficient. Many new techniques have been proposed over the past couple of decades in order to improve the computational efficiency and quality of inference of ABC. From Markov chain Monte Carlo \citep{RN17, RN27} and sequential Monte Carlo methods \citep{RN21, RN30, RN22, RN29}, to reduction of the dimension of summary statistics \citep{RN4, RN3, RN49, RN11} through a wide variety of techniques.
+
+\subsection{Rejection algorithm}
+\label{sec1}
+
+Instead of pre-defining the tolerance level $\epsilon$, it is sometimes beneficial to simulate a set number of datasets $n$, of which we retain the proportion $p$ closest to the observed data. This version of the rejection algorithm is preferential in the scenario where one is unsure of a suitable tolerance to use a priori. The algorithm used in this report is outlined below:
+
+\begin{algorithm}[H]
+	\label{ABC Rejection} 
+	\caption{ABC Rejection}
+	\For{$i\leftarrow 1$ \KwTo $n$}{
+		Sample $\theta_i \sim \pi(\theta)$\;
+		Simulate data $y_i \sim f(y|\theta_i)$\;
+		Transform data $y_i$ into summary statistics $s_i$ (optional)\;
+		Calculate distance $\rho(s_i, s_{obs})$
+	}
+	Retain proportion $p$ with smallest distance
+\end{algorithm}
+
+\noindent Hence, in simple terms, the rejection algorithm consists of sampling parameters from a prior distribution and simulating datasets from a model using these parameters. One can then, optionally, transform these datasets into summary statistics, before retaining the proportion $p$ closest to the observations. The accepted sample of parameters then approximates the posterior distribution.
+
+\subsection{Application to Zombie model}
+
+\section{Sequential Monte Carlo}
+
+Sequential Monte Carlo (SMC) methods applied to ABC are concerned with reducing the number of model runs in order to achieve a certain quality of posterior approximation. We have now seen that the simple ABC rejection algorithm is very computationally demanding, which often limits applications to simple models; the number of simulations required to sample the entire parameter space grows exponentially with the number of parameters \citep{RN32}. SMC methods aim to progressively approximate the posterior using a decreasing sequence of tolerance levels $\{\epsilon_1, ..., \epsilon_T\}$. The idea is to sample from areas of the parameter space with a higher likelihood, rather than systematically from the whole space, in order to gain computational efficiency.
+
+The basis of SMC algorithms is to construct a sequence of target distributions, that one propagates a set of particles through in order to move from the initial distribution to the final distribution. 
+
 
 \bibliography{references}
 
