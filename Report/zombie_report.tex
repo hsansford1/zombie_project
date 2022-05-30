@@ -92,6 +92,12 @@ Instead of pre-defining the tolerance level $\epsilon$, it is sometimes benefici
 
 \subsection{Application to Zombie model}
 
+10,000 simulations
+
+Run-time: 11.26 seconds
+
+max epsilon-value of accepted simulations: 20.178
+
 \begin{figure}[H]
 \centering
 \includegraphics[width=0.8\linewidth]{../Figures/rej_ABC_simulations}
@@ -142,6 +148,14 @@ with $N$ being the number of samples in the first, and subsequent, iterations. A
 A drawback of this method is that it requires the user to pre-define a decreasing sequence of tolerance levels $\{\epsilon_1, ..., \epsilon_T\}$. A poor choice of sequence could detriment the possible benefits of the importance sampling procedure. In the population genetic example conducted by \cite{RN21}, $\epsilon_1$ is based on a preliminary simulation as the 0.1 quantile and they perform four iterations with $\epsilon_2 = 0.75\epsilon_1$, $\epsilon_3 = 0.9\epsilon_2$ and $\epsilon_4 = 0.9\epsilon_3$.
 
 \subsection{Application to Zombie model}
+
+sequence of tolerance levels: $\{ 10, 5, 1, 0.5\}$
+
+no of simulations performed: 4096
+
+Compute time: 2.89 seconds
+
+max epsilon of accepted simulations: 0.489
 
 \begin{figure}[H]
 	\centering

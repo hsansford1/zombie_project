@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.20 (TeX Live 2019/Debian) (preloaded format=pdflatex 2021.9.28)  30 MAY 2022 12:10
+This is pdfTeX, Version 3.14159265-2.6-1.40.20 (TeX Live 2019/Debian) (preloaded format=pdflatex 2021.9.28)  30 MAY 2022 13:02
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -391,20 +391,20 @@ File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 File: ../Figures/rej_ABC_simulations.png Graphic file (type png)
 <use ../Figures/rej_ABC_simulations.png>
 Package pdftex.def Info: ../Figures/rej_ABC_simulations.png  used on input line
- 97.
+ 103.
 (pdftex.def)             Requested size: 343.48299pt x 214.68588pt.
  [3]
 <../Figures/rej_abc_sd_bands.png, id=24, 602.25pt x 376.40625pt>
 File: ../Figures/rej_abc_sd_bands.png Graphic file (type png)
 <use ../Figures/rej_abc_sd_bands.png>
 Package pdftex.def Info: ../Figures/rej_abc_sd_bands.png  used on input line 10
-2.
+8.
 (pdftex.def)             Requested size: 343.48299pt x 214.68588pt.
 <../Figures/rejection_posteriors.png, id=25, 606.01407pt x 371.88937pt>
 File: ../Figures/rejection_posteriors.png Graphic file (type png)
 <use ../Figures/rejection_posteriors.png>
 Package pdftex.def Info: ../Figures/rejection_posteriors.png  used on input lin
-e 107.
+e 113.
 (pdftex.def)             Requested size: 429.3521pt x 263.4815pt.
  [4 <../Figures/rej_ABC_simulations.png (PNG copy)> <../Figures/rej_abc_sd_band
 s.png (PNG copy)>] [5 <../Figures/rejection_posteriors.png (PNG copy)>]
@@ -412,19 +412,19 @@ s.png (PNG copy)>] [5 <../Figures/rejection_posteriors.png (PNG copy)>]
 File: ../Figures/PMC-ABC_simulations.png Graphic file (type png)
 <use ../Figures/PMC-ABC_simulations.png>
 Package pdftex.def Info: ../Figures/PMC-ABC_simulations.png  used on input line
- 148.
+ 162.
 (pdftex.def)             Requested size: 343.48299pt x 210.78748pt.
  [6]
 <../Figures/PMC_ABC_sd_bands.png, id=38, 606.01407pt x 371.88937pt>
 File: ../Figures/PMC_ABC_sd_bands.png Graphic file (type png)
 <use ../Figures/PMC_ABC_sd_bands.png>
-Package pdftex.def Info: ../Figures/PMC_ABC_sd_bands.png  used on input line 15
-3.
+Package pdftex.def Info: ../Figures/PMC_ABC_sd_bands.png  used on input line 16
+7.
 (pdftex.def)             Requested size: 343.48299pt x 210.78748pt.
 <../Figures/PMC_posteriors.png, id=39, 606.01407pt x 371.88937pt>
 File: ../Figures/PMC_posteriors.png Graphic file (type png)
 <use ../Figures/PMC_posteriors.png>
-Package pdftex.def Info: ../Figures/PMC_posteriors.png  used on input line 158.
+Package pdftex.def Info: ../Figures/PMC_posteriors.png  used on input line 172.
 
 (pdftex.def)             Requested size: 429.3521pt x 263.4815pt.
  [7 <../Figures/PMC-ABC_simulations.png (PNG copy)> <../Figures/PMC_ABC_sd_band
@@ -452,7 +452,7 @@ r/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/shar
 e/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy7.pfb></usr/share/texli
 ve/texmf-dist/fonts/type1/public/amsfonts/cm/cmti10.pfb></usr/share/texmf/fonts
 /type1/public/cm-super/sfrm1000.pfb>
-Output written on zombie_report.pdf (9 pages, 458340 bytes).
+Output written on zombie_report.pdf (9 pages, 474736 bytes).
 PDF statistics:
  93 PDF objects out of 1000 (max. 8388607)
  62 compressed objects within 1 object stream
