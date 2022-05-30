@@ -57,8 +57,9 @@ simulate_zombies <- function(params){
     R[i+1] <- R[i] + dt*(alpha*S[i]*Z[i] + delta*(S[i]+I[i]) - zeta*R[i])
   }
 
-  
+  daily_S <- S[seq(1,501,20)]
+  daily_Z <- Z[seq(1,501,20)]
   # return(list('S'=S, 'I'=I, 'Z'=Z, 'R'=R, 't'=t))
-  return(c(S,Z))
+  return(c(daily_S,daily_Z))
 }
 

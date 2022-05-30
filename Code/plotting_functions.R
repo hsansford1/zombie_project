@@ -28,13 +28,13 @@ histogram_plot <- function(param, title){
 ## Plot accepted sampled trajectories
 plot_trajectories <- function(true_epidemic, t,  accepted_params, title){
   par(mfrow=c(1,1))
-  plot(t, floor(true_epidemic[1:501]), ylim=c(0,500), type='l', col=colours[2], lwd=3,
+  plot(t, floor(true_epidemic[1:26]), ylim=c(0,500), type='l', col=colours[2], lwd=3,
        ylab='Population Values', xlab='Time', main=title)
-  lines(t, floor(true_epidemic[502:1002]), col=colours[3], lwd=3)
+  lines(t, floor(true_epidemic[27:52]), col=colours[3], lwd=3)
   for (i in 1:225){
     rej_epidemic <- simulate_zombies(accepted_params[i,])
-    lines(t, floor(rej_epidemic[1:501]), col=alpha(colours[2], 0.4), lwd=1)
-    lines(t, floor(rej_epidemic[502:1002]), col=alpha(colours[3], 0.4), lwd=1)
+    lines(t, floor(rej_epidemic[1:26]), col=alpha(colours[2], 0.4), lwd=1)
+    lines(t, floor(rej_epidemic[27:52]), col=alpha(colours[3], 0.4), lwd=1)
   }
   legend('topright', legend = c('True Susceptibles', 'True Zombies', 
                                 'Simulated Susceptibles', 'Simulated Zombies'), 
@@ -45,17 +45,17 @@ plot_trajectories <- function(true_epidemic, t,  accepted_params, title){
 
 ## Plot confidence bands
 plot_conf_bands <- function(true_epidemic, t, abc_output, title){
-  plot(t, floor(true_epidemic[1:501]), ylim=c(0,500), type='l', col=colours[2], lwd=3,
+  plot(t, floor(true_epidemic[1:26]), ylim=c(0,500), type='l', col=colours[2], lwd=3,
        ylab='Population Values', xlab='Time', main=title)
-  lines(t, floor(true_epidemic[502:1002]), col=colours[3], lwd=3)
+  lines(t, floor(true_epidemic[27:52]), col=colours[3], lwd=3)
   
-  lines(t, apply(abc_output$stats[,1:501], 2, mean), col = colours[1], lwd=3, lty=2)
-  polygon(c(t,rev(t)), c(apply(abc_output$stats[,1:501], 2, quantile, prob=0.05), 
-                         rev(apply(abc_output$stats[,1:501], 2, quantile, prob= 0.95))), 
+  lines(t, apply(abc_output$stats[,1:26], 2, mean), col = colours[1], lwd=3, lty=2)
+  polygon(c(t,rev(t)), c(apply(abc_output$stats[,1:26], 2, quantile, prob=0.05), 
+                         rev(apply(abc_output$stats[,1:26], 2, quantile, prob= 0.95))), 
           col=alpha(colours[1], 0.3), border = NA)
-  lines(t, apply(abc_output$stats[,502:1002], 2, mean), col = colours[4], lwd=3, lty=2)
-  polygon(c(t,rev(t)), c(apply(abc_output$stats[,502:1002], 2, quantile, prob=0.05), 
-                         rev(apply(abc_output$stats[,502:1002], 2, quantile, prob= 0.95))), 
+  lines(t, apply(abc_output$stats[,27:52], 2, mean), col = colours[4], lwd=3, lty=2)
+  polygon(c(t,rev(t)), c(apply(abc_output$stats[,27:52], 2, quantile, prob=0.05), 
+                         rev(apply(abc_output$stats[,27:52], 2, quantile, prob= 0.95))), 
           col=alpha(colours[4], 0.3), border = NA)
   legend('topright', legend = c('True Susceptibles', 'True Zombies', 
                                 'Mean Simulated Susceptibles', 'Mean Simulated Zombies'),
@@ -65,17 +65,17 @@ plot_conf_bands <- function(true_epidemic, t, abc_output, title){
 
 ## Plot mean +/- one standard deviation
 plot_sd_bands <- function(true_epidemic, t, abc_output, title){
-  plot(t, floor(true_epidemic[1:501]), ylim=c(0,500), type='l', col=colours[2], lwd=3,
+  plot(t, floor(true_epidemic[1:26]), ylim=c(0,500), type='l', col=colours[2], lwd=3,
        ylab='Population Values', xlab='Time', main=title)
-  lines(t, floor(true_epidemic[502:1002]), col=colours[3], lwd=3)
+  lines(t, floor(true_epidemic[27:52]), col=colours[3], lwd=3)
   
-  lines(t, apply(abc_output$stats[,1:501], 2, mean), col = colours[1], lwd=3, lty=2)
-  polygon(c(t,rev(t)), c(apply(abc_output$stats[,1:501], 2, mean) - apply(abc_output$stats[,1:501], 2, sd), 
-                         rev(apply(abc_output$stats[,1:501], 2, mean) + apply(abc_output$stats[,1:501], 2, sd))), 
+  lines(t, apply(abc_output$stats[,1:26], 2, mean), col = colours[1], lwd=3, lty=2)
+  polygon(c(t,rev(t)), c(apply(abc_output$stats[,1:26], 2, mean) - apply(abc_output$stats[,1:26], 2, sd), 
+                         rev(apply(abc_output$stats[,1:26], 2, mean) + apply(abc_output$stats[,1:26], 2, sd))), 
           col=alpha(colours[1], 0.3), border = NA)
-  lines(t, apply(abc_output$stats[,502:1002], 2, mean), col = colours[4], lwd=3, lty=2)
-  polygon(c(t,rev(t)), c(apply(abc_output$stats[,502:1002], 2, mean) - apply(abc_output$stats[,502:1002], 2, sd), 
-                         rev(apply(abc_output$stats[,502:1002], 2, mean) + apply(abc_output$stats[,502:1002], 2, sd))), 
+  lines(t, apply(abc_output$stats[,27:52], 2, mean), col = colours[4], lwd=3, lty=2)
+  polygon(c(t,rev(t)), c(apply(abc_output$stats[,27:52], 2, mean) - apply(abc_output$stats[,27:52], 2, sd), 
+                         rev(apply(abc_output$stats[,27:52], 2, mean) + apply(abc_output$stats[,27:52], 2, sd))), 
           col=alpha(colours[4], 0.3), border = NA)
   legend('topright', legend = c('True Susceptibles', 'True Zombies', 
                                 'Mean Simulated Susceptibles', 'Mean Simulated Zombies'),
