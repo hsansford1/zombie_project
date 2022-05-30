@@ -69,7 +69,7 @@ p_{\epsilon}(\theta, s|s_{obs}) \propto \pi(\theta)f_n(s|\theta)K_{\epsilon}(\|s
 \end{equation}
 where $f_n(s|\theta)$ is the implicit density of the model, $K_{\epsilon}(x)$ is a kernel function with tolerance $\epsilon$, and $\| \cdot \|$ is a distance metric \citep{RN2}. The kernel function enables us to include in our posterior density the parameter values that best approximate the observations. This idea of estimating the likelihood of parameters using simulations that are `close' to the observed data dates back at least as far as \cite{RN56}.
 
-As the tolerance value $\epsilon$ tends to zero, the simulations we accept are closer to the true data and the approximate posterior becomes closer to its true distribution. Unfortunately, in order to simulate the same number of points at a smaller tolerance level often requires many more simulations, and the simplest algorithms can quickly become computationally inefficient. Many new techniques have been proposed over the past couple of decades in order to improve the computational efficiency and quality of inference of ABC. From Markov chain Monte Carlo \citep{RN17, RN27} and sequential Monte Carlo methods \citep{RN21, RN30, RN22, RN29}, to reduction of the dimension of summary statistics \citep{RN4, RN3, RN49, RN11} through a wide variety of techniques.
+As the tolerance value $\epsilon$ tends to zero, the simulations we accept are closer to the true data and the approximate posterior becomes closer to its true distribution. Unfortunately, in order to simulate the same number of points at a smaller tolerance level often requires many more simulations, and the simplest algorithms can quickly become computationally inefficient. Luckily, we can harness techniques such as Markov chain Monte Carlo \citep{RN17, RN27} and sequential Monte Carlo \citep{RN21, RN30, RN22, RN29} to improve the computational efficiency of ABC.
 
 \subsection{Rejection algorithm}
 \label{sec1}
@@ -92,11 +92,71 @@ Instead of pre-defining the tolerance level $\epsilon$, it is sometimes benefici
 
 \subsection{Application to Zombie model}
 
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.8\linewidth]{../Figures/rej_ABC_simulations}
+\end{figure}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.8\linewidth]{../Figures/rej_abc_sd_bands}
+\end{figure}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=1\linewidth]{../Figures/rejection_posteriors}
+\end{figure}
+
+
 \section{Sequential Monte Carlo}
 
 Sequential Monte Carlo (SMC) methods applied to ABC are concerned with reducing the number of model runs in order to achieve a certain quality of posterior approximation. We have now seen that the simple ABC rejection algorithm is very computationally demanding, which often limits applications to simple models; the number of simulations required to sample the entire parameter space grows exponentially with the number of parameters \citep{RN32}. SMC methods aim to progressively approximate the posterior using a decreasing sequence of tolerance levels $\{\epsilon_1, ..., \epsilon_T\}$. The idea is to sample from areas of the parameter space with a higher likelihood, rather than systematically from the whole space, in order to gain computational efficiency.
 
 The basis of SMC algorithms is to construct a sequence of target distributions, that one propagates a set of particles through in order to move from the initial distribution to the final distribution. 
+
+\subsection{Population Monte Carlo}
+
+The first stage of the PMC ABC method of \cite{RN21} is identical to that of rejection ABC in Algorithm \ref{ABC Rejection}, giving the first stage approximation to the posterior distribution. One then resamples parameter values from a density kernel 
+$$ q(\theta) = \sum_{j=1}^{N} w_j^{(t-1)} K(\theta| \theta_{j}^{(t-1)};\tau_t^2),$$ 
+with $N$ being the number of samples in the first, and subsequent, iterations. A popular choice is a Gaussian kernel and \cite{RN21} shows that a good choice of $\tau$ is twice the empirical variance of the simulated parameters in the previous iteration. The bias that is induced by sampling from a proposal distribution, rather than the prior, is fixed by assigning an importance weight to each particle, as outlined in Algorithm \ref{PMC ABC} below. 
+
+
+\begin{algorithm}[H]
+	\label{PMC ABC}
+	\caption{Population Monte Carlo ABC (PMC)}
+	Given a decreasing sequence of tolerance levels $\{\epsilon_1, ..., \epsilon_T\}$\;
+	\For{$t=1$}{
+		\For{$i=1$ to $N$}{
+			\textbf{until} $\rho(y, y_{obs}) < \epsilon_1$\;
+			Simulate $\theta_{i}^{(1)} \sim \pi(\theta)$ and $y \sim f(y|\theta_{i}^{(1)})$ }
+		Set $w_{i}^{(1)} = 1/N$ }
+	\For{$t=2$ to $T$}{
+		\For{$i=1$ to $N$}{
+			\textbf{until} $\rho(y, y_{obs}) < \epsilon_t$\;
+			Sample $\theta_{i}^{*}$ from $\theta^{(t-1)}_j$ with probabilities $w_j^{(t-1)}$\;
+			Generate $\theta_{i}^{(t)} \sim K(\theta| \theta_{i}^{*};\tau_t^2)$ and $y \sim f(y|\theta_{i}^{(t)})$ }
+		Set $w_{i}^{(t)} \propto \pi(\theta_{i}^{(t)}) / \sum_{j=1}^{N} w_j^{(t-1)} K(\theta_{i}^{(t)}| \theta_j^{(t-1)}; \tau_t^2)$\;
+		Set $\tau_{t+1}^2$ as twice the weighted emprirical variance of the $\theta_i^{(t)}$'s}
+\end{algorithm}	
+
+A drawback of this method is that it requires the user to pre-define a decreasing sequence of tolerance levels $\{\epsilon_1, ..., \epsilon_T\}$. A poor choice of sequence could detriment the possible benefits of the importance sampling procedure. In the population genetic example conducted by \cite{RN21}, $\epsilon_1$ is based on a preliminary simulation as the 0.1 quantile and they perform four iterations with $\epsilon_2 = 0.75\epsilon_1$, $\epsilon_3 = 0.9\epsilon_2$ and $\epsilon_4 = 0.9\epsilon_3$.
+
+\subsection{Application to Zombie model}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.8\linewidth]{../Figures/PMC-ABC_simulations}
+\end{figure}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.8\linewidth]{../Figures/PMC_ABC_sd_bands}
+\end{figure}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=1\linewidth]{../Figures/PMC_posteriors}
+\end{figure}
 
 
 \bibliography{references}
