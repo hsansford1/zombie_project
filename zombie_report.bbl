@@ -1,0 +1,124 @@
+\begin{thebibliography}{}
+
+\bibitem[Beaumont, 2019]{RN2}
+Beaumont, M.~A. (2019).
+\newblock Approximate bayesian computation.
+\newblock {\em Annual Review of Statistics and Its Application}, 6(1):379--403.
+
+\bibitem[Beaumont et~al., 2009]{RN21}
+Beaumont, M.~A., Cornuet, J.-M., Marin, J.-M., and Robert, C.~P. (2009).
+\newblock Adaptive approximate bayesian computation.
+\newblock page arXiv:0805.2256.
+
+\bibitem[Blum and François, 2010]{RN49}
+Blum, M.~G. and François, O. (2010).
+\newblock Non-linear regression models for approximate bayesian computation.
+\newblock {\em Statistics and computing}, 20(1):63--73.
+
+\bibitem[Del~Moral et~al., 2012]{RN22}
+Del~Moral, P., Doucet, A., and Jasra, A. (2012).
+\newblock An adaptive sequential monte carlo method for approximate bayesian
+  computation.
+\newblock {\em STATISTICS AND COMPUTING}, 22(5):1009--1020.
+
+\bibitem[Diggle and Gratton, 1984]{RN56}
+Diggle, P.~J. and Gratton, R.~J. (1984).
+\newblock Monte carlo methods of inference for implicit statistical models.
+\newblock {\em Journal of the Royal Statistical Society. Series B
+  (Methodological)}, 46(2):193--227.
+
+\bibitem[Drovandi and Pettitt, 2011]{RN30}
+Drovandi, C.~C. and Pettitt, A.~N. (2011).
+\newblock Estimation of parameters for macroparasite population evolution using
+  approximate bayesian computation.
+\newblock {\em Biometrics}, 67(1):225--33.
+
+\bibitem[Fearnhead and Prangle, 2012]{RN11}
+Fearnhead, P. and Prangle, D. (2012).
+\newblock Constructing summary statistics for approximate bayesian computation:
+  semi-automatic approximate bayesian computation.
+\newblock {\em Journal of the Royal Statistical Society: Series B (Statistical
+  Methodology)}, 74(3):419--474.
+
+\bibitem[Hahn et~al., 2017]{RN62}
+Hahn, C., Vakili, M., Walsh, K., Hearin, A.~P., Hogg, D.~W., and Campbell, D.
+  (2017).
+\newblock Approximate bayesian computation in large-scale structure:
+  constraining the galaxy–halo connection.
+\newblock {\em Monthly Notices of the Royal Astronomical Society},
+  469(3):2791--2805.
+
+\bibitem[Holden et~al., 2018]{RN61}
+Holden, P.~B., Edwards, N.~R., Hensman, J., and Wilkinson, R.~D. (2018).
+\newblock Abc for climate: dealing with expensive simulators.
+\newblock {\em Handbook of approximate Bayesian computation}, pages 569--95.
+
+\bibitem[Jiang et~al., 2017]{RN6}
+Jiang, B., Wu, T.-y., Zheng, C., and Wong, W.~H. (2017).
+\newblock Learning summary statistic for approximate bayesian computation via
+  deep neural network.
+\newblock {\em Statistica Sinica}, pages 1595--1618.
+
+\bibitem[Joyce and Marjoram, 2008]{RN4}
+Joyce, P. and Marjoram, P. (2008).
+\newblock Approximately sufficient statistics and bayesian computation.
+\newblock {\em Statistical Applications in Genetics and Molecular Biology},
+  7(1).
+
+\bibitem[Lenormand et~al., 2013]{RN29}
+Lenormand, M., Jabot, F., and Deffuant, G. (2013).
+\newblock Adaptive approximate bayesian computation for complex models.
+\newblock {\em Computational Statistics}, 28(6):2777--2796.
+
+\bibitem[Liepe et~al., 2014]{RN60}
+Liepe, J., Kirk, P., Filippi, S., Toni, T., Barnes, C.~P., and Stumpf, M.~P.
+  (2014).
+\newblock A framework for parameter estimation and model selection from
+  experimental data in systems biology using approximate bayesian computation.
+\newblock {\em Nature protocols}, 9(2):439--456.
+
+\bibitem[Marjoram et~al., 2003]{RN17}
+Marjoram, P., Molitor, J., Plagnol, V., and Tavaré, S. (2003).
+\newblock Markov chain monte carlo without likelihoods.
+\newblock {\em Proceedings of the National Academy of Sciences},
+  100(26):15324--15328.
+
+\bibitem[McKinley et~al., 2018]{RN59}
+McKinley, T.~J., Vernon, I., Andrianakis, I., McCreesh, N., Oakley, J.~E.,
+  Nsubuga, R.~N., Goldstein, M., and White, R.~G. (2018).
+\newblock Approximate bayesian computation and simulation-based inference for
+  complex stochastic epidemic models.
+\newblock {\em Statistical science}, 33(1):4--18.
+
+\bibitem[Minter and Retkute, 2019]{RN10}
+Minter, A. and Retkute, R. (2019).
+\newblock Approximate bayesian computation for infectious disease modelling.
+\newblock {\em Epidemics}, 29:100368.
+
+\bibitem[Nunes and Balding, 2010]{RN3}
+Nunes, M.~A. and Balding, D.~J. (2010).
+\newblock On optimal selection of summary statistics for approximate bayesian
+  computation.
+\newblock {\em Statistical Applications in Genetics and Molecular Biology},
+  9(1).
+
+\bibitem[Pritchard et~al., 1999]{RN57}
+Pritchard, J.~K., Seielstad, M.~T., Perez-Lezaun, A., and Feldman, M.~W.
+  (1999).
+\newblock Population growth of human y chromosomes: a study of y chromosome
+  microsatellites.
+\newblock {\em Mol Biol Evol}, 16(12):1791--8.
+
+\bibitem[Raynal et~al., 2019]{RN8}
+Raynal, L., Marin, J.-M., Pudlo, P., Ribatet, M., Robert, C.~P., and Estoup, A.
+  (2019).
+\newblock Abc random forests for bayesian parameter inference.
+\newblock {\em Bioinformatics}, 35(10):1720--1728.
+
+\bibitem[Wegmann et~al., 2009]{RN27}
+Wegmann, D., Leuenberger, C., and Excoffier, L. (2009).
+\newblock Efficient approximate bayesian computation coupled with markov chain
+  monte carlo without likelihood.
+\newblock {\em Genetics}, 182(4):1207--18.
+
+\end{thebibliography}

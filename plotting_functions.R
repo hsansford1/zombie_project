@@ -64,7 +64,7 @@ plot_conf_bands <- function(true_epidemic, t, abc_output, title){
 
 
 ## Plot mean +/- one standard deviation
-plot_conf_bands2 <- function(true_epidemic, t, abc_output, title){
+plot_sd_bands <- function(true_epidemic, t, abc_output, title){
   plot(t, floor(true_epidemic[1:501]), ylim=c(0,500), type='l', col=colours[2], lwd=3,
        ylab='Population Values', xlab='Time', main=title)
   lines(t, floor(true_epidemic[502:1002]), col=colours[3], lwd=3)

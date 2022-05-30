@@ -1,0 +1,48 @@
+This is BibTeX, Version 0.99d (TeX Live 2021)
+Capacity: max_strings=200000, hash_size=200000, hash_prime=170003
+The top-level auxiliary file: zombie_report.aux
+The style file: apalike.bst
+Database file #1: references.bib
+Warning--empty journal in RN21
+You've used 20 entries,
+            1935 wiz_defined-function locations,
+            621 strings with 7469 characters,
+and the built_in function-call counts, 9085 in all, are:
+= -- 877
+> -- 409
+< -- 11
++ -- 144
+- -- 140
+* -- 806
+:= -- 1537
+add.period$ -- 60
+call.type$ -- 20
+change.case$ -- 170
+chr.to.int$ -- 20
+cite$ -- 21
+duplicate$ -- 329
+empty$ -- 606
+format.name$ -- 174
+if$ -- 1816
+int.to.chr$ -- 1
+int.to.str$ -- 0
+missing$ -- 20
+newline$ -- 103
+num.names$ -- 60
+pop$ -- 131
+preamble$ -- 1
+purify$ -- 170
+quote$ -- 0
+skip$ -- 282
+stack$ -- 0
+substring$ -- 662
+swap$ -- 70
+text.length$ -- 3
+text.prefix$ -- 0
+top$ -- 0
+type$ -- 120
+warning$ -- 1
+while$ -- 60
+width$ -- 0
+write$ -- 261
+(There was 1 warning)

@@ -22,6 +22,7 @@ library(readr)
 
 # Model
 We consider four basic classes:
+
 * Susceptible ($S$)
 * Infected ($I$)
 * Zombie ($Z$)
