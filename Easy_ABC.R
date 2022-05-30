@@ -4,7 +4,7 @@ library(jcolors)
 colours <- jcolors('pal3')
 library(scales)
 library(EasyABC)
-
+library(abc)
 
 ## Simulate 'true' epidemic data
 
@@ -29,7 +29,7 @@ p <- 0.005  #proportion of simulations to be retained
 
 # run ABC rejection algorithm
 ABC_rej <- ABC_rejection(model = simulate_zombies, prior=priors, nb_simul=n, 
-                         summary_stat_target = epidemic, tol=p, progress_bar=TRUE)
+                         summary_stat_target = true_epidemic, tol=p, progress_bar=TRUE)
 
 # algorithm run-time
 ABC_rej$computime
@@ -38,28 +38,18 @@ ABC_rej$computime
 histogram_plot(ABC_rej$param, 'Posterior distributions from Rejection ABC')
 
 # Plot accepted sampled trajectories
-plot_trajectories(true_epidemic, ABC_rej, title='Accepted simulations from rejection ABC algorithm')
+plot_trajectories(true_epidemic, t, ABC_rej, title='Accepted simulations from rejection ABC algorithm')
 
 
 parnames <- c('delta', 'zeta', 'beta', 'alpha', 'pi', 'rho')
 colnames(ABC_rej$param) <- parnames
 abc_rej <- abc(true_epidemic, ABC_rej$param, ABC_rej$stats, tol=1, method="rejection")
 
-# plot confidence bands
-plot(t, floor(epidemic[1:501]), ylim=c(0,500), type='l', col=colours[2], lwd=3,
-     ylab='Population Values', xlab='Time', main='Mean and confidence band from rejection ABC')
-lines(t, floor(epidemic[502:1002]), col=colours[3], lwd=3)
+# plot mean and 90% confidence bands
+plot_conf_bands(true_epidemic, t, abc_rej, title='Mean and confidence band from rejection ABC')
 
-lines(t, apply(abc_rej$ss[,1:501], 2, mean), col = colours[1], lwd=3, lty=2)
-polygon(c(t,rev(t)), c(apply(abc_rej$ss[,1:501], 2, quantile, prob=0.05), 
-                       rev(apply(abc_rej$ss[,1:501], 2, quantile, prob= 0.95))), 
-                        col=alpha(colours[1], 0.25), border = NA)
-lines(t, apply(abc_rej$ss[,502:1002], 2, mean), col = colours[4], lwd=3, lty=2)
-polygon(c(t,rev(t)), c(apply(abc_rej$ss[,502:1002], 2, quantile, prob=0.05), 
-                       rev(apply(abc_rej$ss[,502:1002], 2, quantile, prob= 0.95))), 
-        col=alpha(colours[4], 0.25), border = NA)
+# plot mean +/- one standard deviation
+plot_conf_bands2(true_epidemic, t, abc_rej, title='Mean and standard deviation from rejection ABC')
 
-lines(t, floor(epidemic[1:501]), col=colours[2], lwd=3)
-lines(t, floor(epidemic[502:1002]), col=colours[3], lwd=3)
 
 
