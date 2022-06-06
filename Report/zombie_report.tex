@@ -63,8 +63,7 @@ Hence, there are six parameters that determine the model dynamics:
 	\item $\rho$: latent infection rate.
 \end{itemize}
 
-We pick the following parameters values to simulate our `true' zombie apocalypse data: $\delta=0.0001$, $\zeta= 0.0001$, $\beta=0.0095$, $\alpha=0.0005$, $\Pi=0.0001$, $\rho=0.05$. To solve the system of ODEs, we use Euler's method with a step size of 0.05. Figure \ref{true_epidemic} shows the dynamics using our chosen parameters. 
-for which we will attempt to estimate the posterior of these parameters using Approximate Bayesian Computation (ABC):
+We pick the following parameters values to simulate our `true' zombie apocalypse data: $\delta=0.0001$, $\zeta= 0.0001$, $\beta=0.0095$, $\alpha=0.0005$, $\Pi=0.0001$, $\rho=0.05$. To solve the system of ODEs, we use Euler's method with a step size of 0.05. Figure \ref{true_epidemic} shows the dynamics using our chosen parameters. We treat this realisation of the model outbreak as our `observed' data, for which we will attempt to estimate the posterior of the parameters of our model using Approximate Bayesian Computation (ABC).
 
 \begin{figure}[H]
 	\centering
