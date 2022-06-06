@@ -4,45 +4,45 @@ The top-level auxiliary file: zombie_report.aux
 The style file: apalike.bst
 Database file #1: references.bib
 Warning--empty journal in RN21
-You've used 22 entries,
+You've used 16 entries,
             1935 wiz_defined-function locations,
-            634 strings with 7505 characters,
-and the built_in function-call counts, 9747 in all, are:
-= -- 947
-> -- 409
-< -- 12
-+ -- 142
-- -- 138
-* -- 861
-:= -- 1646
-add.period$ -- 66
-call.type$ -- 22
-change.case$ -- 179
-chr.to.int$ -- 22
-cite$ -- 23
-duplicate$ -- 357
-empty$ -- 671
-format.name$ -- 174
-if$ -- 1954
+            595 strings with 6621 characters,
+and the built_in function-call counts, 7481 in all, are:
+= -- 727
+> -- 321
+< -- 8
++ -- 114
+- -- 110
+* -- 655
+:= -- 1248
+add.period$ -- 48
+call.type$ -- 16
+change.case$ -- 135
+chr.to.int$ -- 16
+cite$ -- 17
+duplicate$ -- 275
+empty$ -- 509
+format.name$ -- 132
+if$ -- 1510
 int.to.chr$ -- 1
 int.to.str$ -- 0
-missing$ -- 22
-newline$ -- 113
-num.names$ -- 66
-pop$ -- 135
+missing$ -- 16
+newline$ -- 83
+num.names$ -- 48
+pop$ -- 107
 preamble$ -- 1
-purify$ -- 179
+purify$ -- 135
 quote$ -- 0
-skip$ -- 303
+skip$ -- 237
 stack$ -- 0
-substring$ -- 743
-swap$ -- 72
+substring$ -- 587
+swap$ -- 66
 text.length$ -- 3
 text.prefix$ -- 0
 top$ -- 0
-type$ -- 132
+type$ -- 96
 warning$ -- 1
-while$ -- 66
+while$ -- 50
 width$ -- 0
-write$ -- 287
+write$ -- 209
 (There was 1 warning)

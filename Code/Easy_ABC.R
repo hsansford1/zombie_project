@@ -12,7 +12,8 @@ true_params <- c(0.0001, 0.0001, 0.0095, 0.0005, 0.0001, 0.05)
 true_epidemic <- simulate_zombies(true_params)
 t <- seq(0, 25, 1)
 par(mfrow=c(1,1))
-plot(t, floor(true_epidemic[1:26]), ylim=c(0,500), type='l', col=colours[2], lwd=2)
+plot(t, floor(true_epidemic[1:26]), ylim=c(0,500), type='l', col=colours[2], lwd=2, 
+     xlab='Time', ylab='Population Values', main='Zombie apocalypse with chosen parameters')
 lines(t, floor(true_epidemic[27:52]), col=colours[3], lwd=2)
 legend('topright', legend=c('Susceptibles', 'Zombies'), col = colours[2:3], lty=1, lwd=2)
 

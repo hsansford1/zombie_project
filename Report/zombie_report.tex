@@ -46,16 +46,32 @@ We consider four basic classes:
 	\item Removed ($R$)
 \end{itemize}
 
-Susceptibles class can become deceased through 'natural' causes (parameter $\delta$). Removed class are those that have died either through a zombie attack or from natural causes. If a human has died in a zombie attack they can resurrect and become a zombie (parameter $\zeta$). A Susceptible can become a zombie through transmission, i.e. an encounter with a zombie (parameter $\beta$). Zombies can, therefore, only come from two sources; either they are resurrected from the newly deceased or they are a susceptible that has become infected. Prior to becoming a zombie, the period of time for which a susceptibles is infected lasts approximately 24 hours. Infected individuals can still die of natural causes before becoming a zombie, otherwise they become a zombie.
+Susceptible individuals can become deceased through `natural' causes (parameter $\delta$). Removed individuals are those that have died either through a zombie attack or from natural causes. If a human has died in a zombie attack they can resurrect and become a zombie (parameter $\zeta$). A Susceptible can become a zombie through transmission, i.e. an encounter with a zombie (parameter $\beta$). Zombies can, therefore, only come from two sources; either they are resurrected from the newly deceased or they are a susceptible that has become infected. Prior to becoming a zombie, there is a period of time for which a susceptible individual is infected before becoming a zombie ($\rho$). Infected individuals can still die of natural causes before becoming a zombie, otherwise they become a zombie. The birth rate of the human population is assumed to constant, $\Pi$. Zombies can be defeated by removing the head or destroying the brain (parameter $\alpha$). 
 
-The birth rate of the human population is assumed to constant, $\Pi$. Zombies can be defeated by removing the head or destroying the brain (parameter $\alpha$). 
-
-The 4-Class model is thus:
-
+The 4-Class model is thus described mathematically by the following system of ODEs:
 \[S' = \Pi - \beta SZ - \delta S\]
 \[I' = \beta SZ - \rho I - \delta I\]
 \[Z' = \beta SZ + \zeta R - \alpha SZ\]
 \[R' = \delta S + \alpha SZ - \zeta R\]
+Hence, there are six parameters that determine the model dynamics: 
+\begin{itemize}
+	\item $\delta$: background (non zombie related) death rate,
+	\item $\zeta$: zombie resurrection rate,
+	\item $\beta$: zombie transmission rate,
+	\item $\alpha$: zombie destruction rate,
+	\item $\Pi$: birth rate,
+	\item $\rho$: latent infection rate.
+\end{itemize}
+
+We pick the following parameters values to simulate our `true' zombie apocalypse data: $\delta=0.0001$, $\zeta= 0.0001$, $\beta=0.0095$, $\alpha=0.0005$, $\Pi=0.0001$, $\rho=0.05$. To solve the system of ODEs, we use Euler's method with a step size of 0.05. Figure \ref{true_epidemic} shows the dynamics using our chosen parameters. 
+for which we will attempt to estimate the posterior of these parameters using Approximate Bayesian Computation (ABC):
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.8\linewidth]{../Figures/true_epidemic}
+	\caption{`True' zombie apocalypse (`observed' data) simulated from model with chosen parameters (see main text).}
+	\label{true_epidemic}
+\end{figure}
 
 \section{Approximate Bayesian Computation}
 
