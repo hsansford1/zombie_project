@@ -33,6 +33,14 @@ p <- 0.005  #proportion of simulations to be retained
 ABC_rej <- ABC_rejection(model = simulate_zombies, prior=priors, nb_simul=n, 
                          summary_stat_target = true_epidemic, tol=p, progress_bar=TRUE)
 
+set.seed(1)
+ABC_rej_parallel <- ABC_rejection(model = simulate_zombies_seed, prior=priors, nb_simul=n, 
+                                  summary_stat_target = true_epidemic, tol=p, progress_bar=TRUE,
+                                   n_cluster = 4, use_seed = TRUE)
+
+ABC_rej_parallel$computime
+
+
 # algorithm run-time
 ABC_rej$computime
 # 11.262
@@ -75,6 +83,12 @@ n <- 50
 ABC_Beaumont <- ABC_sequential(method="Beaumont", model=simulate_zombies, prior=priors,
                               nb_simul=n, summary_stat_target=true_epidemic,
                               tolerance_tab=tolerance, progress_bar = TRUE, inside_prior = TRUE)
+
+set.seed(1)
+ABC_Beaumont_parallel <- ABC_sequential(method="Beaumont", model=simulate_zombies_seed, prior=priors,
+                               nb_simul=n, summary_stat_target=true_epidemic,
+                               tolerance_tab=tolerance, progress_bar = TRUE,
+                               n_cluster = 4, use_seed = TRUE)
 
 ABC_Beaumont$nsim # The number of model simulations performed.
 # 4096

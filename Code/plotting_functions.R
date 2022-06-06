@@ -5,21 +5,27 @@ histogram_plot <- function(param, title){
   hist(param[,1], breaks=10, col = colours[2], border=colours[2], 
        main='', xlab=expression(delta))
   abline(v=true_params[1], col=colours[3], lwd=2)
+  abline(v=mean(param[,1]), col=colours[1], lwd=2)
   hist(param[,2], breaks=10, col = colours[2], border=colours[2],
        main='', xlab=expression(zeta))
   abline(v=true_params[2], col=colours[3], lwd=2)
+  abline(v=mean(param[,2]), col=colours[1], lwd=2)
   hist(param[,3], breaks=10, col = colours[2], border=colours[2],
        main='', xlab=expression(beta))
   abline(v=true_params[3], col=colours[3], lwd=2)
+  abline(v=mean(param[,3]), col=colours[1], lwd=2)
   hist(param[,4], breaks=10, col = colours[2], border=colours[2],
        main='', xlab=expression(alpha))
   abline(v=true_params[4], col=colours[3], lwd=2)
+  abline(v=mean(param[,4]), col=colours[1], lwd=2)
   hist(param[,5], breaks=10, col = colours[2], border=colours[2],
        main='', xlab=expression(Pi))
   abline(v=true_params[5], col=colours[3], lwd=2)
+  abline(v=mean(param[,5]), col=colours[1], lwd=2)
   hist(param[,6], breaks=10, col = colours[2], border=colours[2],
        main='', xlab=expression(rho))
   abline(v=true_params[6], col=colours[3], lwd=2)
+  abline(v=mean(param[,6]), col=colours[1], lwd=2)
   mtext(title, line=-2, outer=TRUE)
 }
 
