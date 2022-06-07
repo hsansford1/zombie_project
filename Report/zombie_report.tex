@@ -38,6 +38,8 @@
 
 
 \section{Model}
+\label{model}
+
 We consider four basic classes:
 \begin{itemize}
 	\item Susceptible ($S$)
@@ -107,32 +109,37 @@ Instead of pre-defining the tolerance level $\epsilon$, it is sometimes benefici
 
 \subsection{Application to Zombie model}
 
-10,000 simulations
+In our case, the data $y_i$ is simulated from our model described in Section \ref{model} using Euler's method with a step size of 0.05. The summary statistics $s_i$ used in the rejection ABC algorithm are then simply daily values of susceptible individuals and zombies. Since we run the dynamics over a period of 25 days, this means we have a total of 50 summary statistics. Our `observed' data is the model dynamics simulated using the parameters stated in Section \ref{model} and illustrated in Figure \ref{true_epidemic}.
 
-Run-time: 11.26 seconds
+We run the ABC rejection algorithm with uniform priors on each of the parameters (over a reasonable range), $n=10,000$ simulations and retain the proportion $p=0.005$ closest to the observed data. Hence, we retain 50 parameter sets to build our approximate posterior distributions, as illustrated by the histograms in Figure \ref{rej_abc_posteriors}. We see that the posteriors for $\delta$, $\zeta$ and $\Pi$ do not vary greatly from the uniform priors, and the posterior means are quite far from the true parameters. The posteriors for $\beta$ and $\rho$ are slightly more interesting, and the posterior means seem to be closer to the true parameters; however, the posterior distributions do not concentrate well around the true parameters. Finally, for the parameter $\alpha$, the posterior mean almost exactly coincides with the true parameter; however, again the distribution does not concentrate well around this value and does not seem too different from the uniform prior.
+
+In order to compare the rejection ABC algorithm to ABC with SMC in the following section, we report the maximal (normalised) distance (tolerance level) $\epsilon$ from the accepted summary statistics to the observed data: we get a value of $\epsilon = 26.56$. We also report that the algorithm took 13.30 seconds to run. To illustrate how close our accepted simulations are to the observed data, Figure \ref{rej_abc_acc_simulations} show a selection of 25 of the accepted simulations, alongside the observed dynamics. We can see that they vary quite greatly from the true data, indicating that the rejection ABC algorithms requires very large numbers of simulations in order to find the target parameter space. One can imagine that for a more expensive model to simulate from, this method would be too computationally expensive to be of any use.
+
+
 
 max epsilon-value of accepted simulations: 20.178
-
-\begin{figure}[H]
-\centering
-\includegraphics[width=0.8\linewidth]{../Figures/rej_ABC_simulations}
-\caption{The above figure shows a selection of simulations from the model with accepted parameter values from the ABC rejection algorithm, with $n=10,000$, $p=0.005$.}
-\label{rej_abc_acc_simulations}
-\end{figure}
-
-\begin{figure}[H]
-	\centering
-	\includegraphics[width=0.8\linewidth]{../Figures/rej_abc_sd_bands}
-	\caption{The above figure shows the mean of the accepted simulations from the ABC rejection algorithm by the dashed curves, and the shaded regions indicate $\pm$ 1 standard deviation from the mean.}
-	\label{rej_abc_sd}
-\end{figure}
-
 \begin{figure}[H]
 	\centering
 	\includegraphics[width=1\linewidth]{../Figures/rejection_posteriors}
 	\caption{The posterior distributions of the model parameters, attained from the ABC rejection algorithm, with $n=10,000$, $p=0.005$. The values of the true parameters are indicated by the red lines, while the posterior means are indicated by the green lines.}
 	\label{rej_abc_posteriors}
 \end{figure}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.8\linewidth]{../Figures/rej_ABC_simulations}
+\caption{The above figure shows a selection of simulations from the model with accepted parameter values from the ABC rejection algorithm, with $n=10,000$, $p=0.005$, alongside the `observed' dynamics.}
+\label{rej_abc_acc_simulations}
+\end{figure}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.8\linewidth]{../Figures/rej_abc_sd_bands}
+	\caption{The above figure compares the `observed' dynamics (solid curves) with the mean of the accepted simulations from the ABC rejection algorithm (dashed curves). The shaded regions indicate $\pm$ 1 standard deviation from the mean.}
+	\label{rej_abc_sd}
+\end{figure}
+
+
 
 
 \section{Sequential Monte Carlo}
@@ -170,6 +177,7 @@ A drawback of this method is that it requires the user to pre-define a decreasin
 
 \subsection{Application to Zombie model}
 
+
 sequence of tolerance levels: $\{ 10, 5, 1, 0.5\}$
 
 no of simulations performed: 4096
@@ -181,16 +189,22 @@ max epsilon of accepted simulations: 0.489
 \begin{figure}[H]
 	\centering
 	\includegraphics[width=0.8\linewidth]{../Figures/PMC-ABC_simulations}
+	\caption{The above figure shows a selection of simulations from the model with accepted parameter values from the PMC-ABC algorithm, with the decreasing sequence of tolerance levels $\{ 10, 5, 1, 0.5\}$ and $N=50$, alongside the `observed' dynamics.}
+	\label{pmc_abc_acc_simulations}
 \end{figure}
 
 \begin{figure}[H]
 	\centering
 	\includegraphics[width=0.8\linewidth]{../Figures/PMC_ABC_sd_bands}
+	\caption{The above figure compares the `observed' dynamics (solid curves) with the mean of the accepted simulations from the PMC-ABC algorithm (dashed curves). The shaded regions indicate $\pm$ 1 standard deviation from the mean.}
+	\label{pmc_abc_sd}
 \end{figure}
 
 \begin{figure}[H]
 	\centering
 	\includegraphics[width=1\linewidth]{../Figures/PMC_posteriors}
+	\caption{The posterior distributions of the model parameters, attained from the PMC-ABC algorithm, with the decreasing sequence of tolerance levels $\{ 10, 5, 1, 0.5\}$ and $N=50$. The values of the true parameters are indicated by the red lines, while the posterior means are indicated by the green lines.}
+	\label{pmc_abc_posteriors}
 \end{figure}
 
 
