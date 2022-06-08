@@ -182,12 +182,12 @@ The basis of SMC algorithms is to construct a sequence of target distributions, 
 
 The first stage of the PMC ABC method of \cite{RN21} is identical to that of rejection ABC in Algorithm \ref{ABC Rejection}, giving the first stage approximation to the posterior distribution. One then resamples parameter values from a density kernel 
 $$ q(\theta) = \sum_{j=1}^{N} w_j^{(t-1)} K(\theta| \theta_{j}^{(t-1)};\tau_t^2),$$ 
-with $N$ being the number of samples in the first, and subsequent, iterations. A popular choice is a Gaussian kernel and \cite{RN21} shows that a good choice of $\tau$ is twice the empirical variance of the simulated parameters in the previous iteration. The bias that is induced by sampling from a proposal distribution, rather than the prior, is fixed by assigning an importance weight to each particle, as outlined in Algorithm \ref{PMC ABC} below. 
+with $N$ being the number of samples in the first, and subsequent, iterations. A popular choice is a Gaussian kernel and \cite{RN21} shows that a good choice of $\tau$ is twice the empirical variance of the simulated parameters in the previous iteration. The bias that is induced by sampling from a proposal distribution, rather than the prior, is fixed by assigning an importance weight to each particle, as outlined in Algorithm \ref{PMC_ABC} below. 
 
 
-\begin{algorithm}[H]
-	\label{PMC ABC}
+\begin{algorithm}[h]
 	\caption{Population Monte Carlo ABC (PMC)}
+	\label{PMC_ABC}
 	Given a decreasing sequence of tolerance levels $\{\epsilon_1, ..., \epsilon_T\}$\;
 	\For{$t=1$}{
 		\For{$i=1$ to $N$}{
@@ -203,13 +203,16 @@ with $N$ being the number of samples in the first, and subsequent, iterations. A
 		Set $\tau_{t+1}^2$ as twice the weighted emprirical variance of the $\theta_i^{(t)}$'s}
 \end{algorithm}	
 
+
 A drawback of this method is that it requires the user to pre-define a decreasing sequence of tolerance levels $\{\epsilon_1, ..., \epsilon_T\}$. A poor choice of sequence could detriment the possible benefits of the importance sampling procedure. In the population genetic example conducted by \cite{RN21}, $\epsilon_1$ is based on a preliminary simulation as the 0.1 quantile and they perform four iterations with $\epsilon_2 = 0.75\epsilon_1$, $\epsilon_3 = 0.9\epsilon_2$ and $\epsilon_4 = 0.9\epsilon_3$.
 
 \subsection{Application to Zombie model}
 
 We apply the PMC-ABC algorithm using the \texttt{ABC\_sequential} function from the \texttt{EasyABC} package, setting \texttt{method="Beaumont"}. We set $N=50$ in Algorithm \ref{PMC ABC} and choose the sequence of tolerance levels to be $\{30, 10, 5, 1, 0.5\}$. The choice of the first tolerance level was informed by the epsilon value obtained from the rejection ABC algorithm (26.23): $\epsilon=30$ was chosen so that the first stage of the algorithm would not require too many simulations. 
 
-Using our R function to simulate from the model, the algorithm required a total of 3768 simulations and took 2.19 seconds to run. The final maximum epsilon value of the accepted simulations was 0.484.
+Using our R function to simulate from the model, the algorithm required a total of 3768 simulations and took 2.19 seconds to run. The final maximum epsilon value of the accepted simulations was 0.484. This is nearly 7 times faster than the rejection ABC algorithm, and the accepted simulations are considerably closer ($\epsilon= 26.56$ in rejection ABC). Figure \ref{pmc_abc_acc_simulations} illustrates this well, showing 25 of the accepted trajectories; they are much closer to the observed trajectories, and seem to be equally distributed above and below. Figure \ref{pmc_abc_sd} shows that the mean of the accepted trajectories almost exactly coincides with the observed ones, and the standard deviation is much smaller than in the rejection ABC output.
+
+Finally, the posterior distributions for the model parameters, as shown in Figure \ref{pmc_abc_posteriors}, are much better than those obtained from rejection ABC. In particular, the posterior means for the parameters $\beta$, $\alpha$ and $\rho$ almost exactly coincide with the true parameters. The shape of the posterior distribution for these parameters has also certainly deviated from the uniform priors, looking almost Gaussian, centered at the true parameter values. The posteriors for $\delta$, $\zeta$ and $\Pi$ still look fairly uniform (as with rejection ABC), indicating that these parameters have less of an affect on the trajectories and hence are harder to estimate.
 
 
 
@@ -234,6 +237,7 @@ Using our R function to simulate from the model, the algorithm required a total 
 	\label{pmc_abc_posteriors}
 \end{figure}
 
+\section{Conclusion}
 
 \bibliography{references}
 %
