@@ -46,7 +46,7 @@ Zombies, particularly when instigating an apocalypse, exhibit just such chaotic 
 
 %(Munz *et al*, ) but given the seriousness of such a situation it is important that no stone is left un-turned. 
 
-In this report we apply ABC to a zombie apocalypse model to estimate a posterior distribution for the parameters resulting in the `observed' apocalypse. Luckily, there is no real apocalypse data that could be used; hence, we decide on a model in advance and, selecting the `true' parameters for the model, we simulate our `observed' data. We utilise both sequential Monte-Carlo (SMC) techniques and C++ programming in order to improve the computational efficiency of ABC.
+In this report we apply ABC to a zombie apocalypse model to estimate the posterior distribution of the parameters that results in the `observed' apocalypse. Luckily, there is no real apocalypse data that could be used; hence, we decide on a model in advance and, selecting the `true' parameters for the model, we simulate our `observed' data. We utilise both sequential Monte Carlo (SMC) techniques and C++ programming in order to improve the computational efficiency of ABC.
 
 %Statistical methods capable of dealing effectively with highly non-linear systems are not a trivial matter. The simulation-based methods, Sequential Monte Carlo (SMC), Approximate Bayesian Computation (ABC) and Synthetic Likelihood (SL), offer a solution through estimating a posterior via simulated data sets based on sample parameters taken from the prior distribution. Utilising the computational efficiency of SMC, this report aims to compute a 4-Class zombie apocalypse model by approximating the posterior using a progressively decreasing sequence of tolerances. 
 
@@ -62,10 +62,10 @@ We consider four basic classes:
 	\item Removed ($R$)
 \end{itemize}
 
-Susceptible individuals can become deceased through `natural' causes (parameter $\delta$). Removed individuals are those that have died either through a zombie attack or from natural causes. If a human has died in a zombie attack they can resurrect and become a zombie (parameter $\zeta$). A Susceptible can become a zombie through transmission, i.e. an encounter with a zombie (parameter $\beta$). Zombies can, therefore, only come from two sources; either they are resurrected from the newly deceased or they are a susceptible that has become infected. Prior to becoming a zombie, there is a period of time for which a susceptible individual is infected before becoming a zombie ($\rho$). Infected individuals can still die of natural causes before becoming a zombie, otherwise they become a zombie. The birth rate of the human population is assumed to constant, $\Pi$. Zombies can be defeated by removing the head or destroying the brain (parameter $\alpha$). These transitions between classes are summarised in Figure \ref{fig:flowchart}.
+Susceptible individuals can become deceased through `natural' causes (parameter $\delta$). Removed individuals are those that have died either through a zombie attack or from natural causes. If a human has died in a zombie attack they can resurrect and become a zombie (parameter $\zeta$). A Susceptible can become a zombie through transmission, i.e. an encounter with a zombie (parameter $\beta$). Zombies can, therefore, only come from two sources; either they are resurrected from the newly deceased or they are a susceptible that has become infected. Prior to becoming a zombie, there is a period of time for which a susceptible individual is infected before becoming a zombie (parameter $\rho$). Infected individuals can still die of natural causes before becoming a zombie, otherwise they become a zombie. The birth rate of the human population is assumed to constant, $\Pi$. Zombies can be defeated by removing the head or destroying the brain (parameter $\alpha$). These transitions between classes are summarised in Figure \ref{fig:flowchart}.
 
 % ---- FLOWCHART ----
-\begin{figure}[b]\label{fig:flowchart}
+\begin{figure}[b]
 	\centering
 	\begin{tikzpicture}[node distance=3cm]
 	\node (S) [letter] {$S$};
@@ -81,6 +81,7 @@ Susceptible individuals can become deceased through `natural' causes (parameter 
 	\draw[arrow] (-2,0) -- node[anchor=south, xshift=-.0cm] {$\Pi$} (S);
 	\end{tikzpicture}
 	\caption{The SIZR model.}
+	\label{fig:flowchart}
 \end{figure}
 % ----
 
@@ -99,7 +100,7 @@ Hence, there are six parameters that determine the model dynamics:
 	\item $\rho$: latent infection rate.
 \end{itemize}
 
-We pick the following parameter values to simulate our `true' zombie apocalypse data: $\delta=0.0001$, $\zeta= 0.0001$, $\beta=0.0095$, $\alpha=0.0005$, $\Pi=0.0001$, $\rho=0.05$. To solve the system of ODEs, we use Euler's method with a step size of 0.05. Figure \ref{true_epidemic} shows the dynamics using our chosen parameters. We treat this realisation of the model outbreak as our `observed' data, for which we will attempt to estimate the posterior of the parameters of our model using Approximate Bayesian Computation (ABC), which we will explain in detail in the following section.
+We pick the following parameter values to simulate our `true' zombie apocalypse data: $\delta=0.0001$, $\zeta= 0.0001$, $\beta=0.0095$, $\alpha=0.0005$, $\Pi=0.0001$, $\rho=0.05$. To solve the system of ODEs, we use Euler's method with a step size of 0.05. Figure \ref{true_epidemic} shows the dynamics using our chosen parameters. We treat this realisation of the model outbreak as our `observed' data, for which we will attempt to estimate the posterior of the parameters of our model using ABC, which we will explain in detail in the following section.
 
 \begin{figure}[H]
 	\centering
