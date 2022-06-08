@@ -11,6 +11,7 @@
 \usepackage[utf8]{inputenc}
 \usepackage{listings}
 \usepackage{xcolor}
+\usepackage{hyperref}
 \usepackage{geometry}
 \geometry{
 	left=32.5mm,
@@ -119,7 +120,7 @@ The goal of ABC is to find a posterior distribution for the parameters of the im
 \begin{equation}
 p_{\epsilon}(\theta, s|s_{obs}) \propto \pi(\theta)f_n(s|\theta)K_{\epsilon}(\|s - s_{obs}\|),
 \end{equation}
-where $f_n(s|\theta)$ is the implicit density of the model, $K_{\epsilon}(x)$ is a kernel function with tolerance $\epsilon$, and $\| \cdot \|$ is a distance metric \citep{RN2}. The kernel function enables us to include in our posterior density the parameter values that best approximate the observations. This idea of estimating the likelihood of parameters using simulations that are `close' to the observed data dates back at least as far as \cite{RN56}.
+where $f_n(s|\theta)$ is the implicit density of the model, $K_{\epsilon}(x)$ is a kernel function with tolerance $\epsilon$, and $\| \cdot \|$ is a distance metric \citep{RN2}. The kernel function enables us to include in our posterior density the parameter values that best approximate the observations; often it is simply $K_{\epsilon}(x) = \mathbb{I}(x \leq \epsilon)$, where $\mathbb{I}$ is the indicator function. This idea of estimating the likelihood of parameters using simulations that are `close' to the observed data dates back at least as far as \cite{RN56}.
 
 As the tolerance value $\epsilon$ tends to zero, the simulations we accept are closer to the true data and the approximate posterior becomes closer to its true distribution. Unfortunately, in order to simulate the same number of points at a smaller tolerance level often requires many more simulations, and the simplest algorithms can quickly become computationally inefficient. Luckily, we can harness techniques such as Markov chain Monte Carlo \citep{RN17, RN27} and sequential Monte Carlo \citep{RN21, RN30, RN22, RN29} to improve the computational efficiency of ABC.
 
@@ -144,14 +145,14 @@ Instead of pre-defining the tolerance level $\epsilon$, it is sometimes benefici
 
 \subsection{Application to Zombie model}
 
-In our case, the data $y_i$ is simulated from our model described in Section \ref{model} using Euler's method with a step size of 0.05. The summary statistics $s_i$ used in the rejection ABC algorithm are then simply daily values of susceptible individuals and zombies. Since we run the dynamics over a period of 25 days, this means we have a total of 50 summary statistics. Our `observed' data is the model dynamics simulated using the parameters stated in Section \ref{model} and illustrated in Figure \ref{true_epidemic}.
+In our case, the data $y_i$ are simulated from our model described in Section \ref{model} using Euler's method with a step size of 0.05. The summary statistics $s_i$ used in the rejection ABC algorithm are simply daily values of susceptible individuals and zombies. Since we run the dynamics over a period of 25 days, this means we have a total of 50 summary statistics. Our `observed' data are the model dynamics simulated using the parameters stated in Section \ref{model} and illustrated in Figure \ref{true_epidemic}.
 
-We run the ABC rejection algorithm with uniform priors on each of the parameters (over a reasonable range), $n=10,000$ simulations and retain the proportion $p=0.005$ closest to the observed data. Hence, we retain 50 parameter sets to build our approximate posterior distributions, as illustrated by the histograms in Figure \ref{rej_abc_posteriors}. We see that the posteriors for $\delta$, $\zeta$ and $\Pi$ do not vary greatly from the uniform priors, and the posterior means are quite far from the true parameters. The posteriors for $\beta$ and $\rho$ are slightly more interesting, and the posterior means seem to be closer to the true parameters; however, the posterior distributions do not concentrate well around the true parameters. Finally, for the parameter $\alpha$, the posterior mean almost exactly coincides with the true parameter; however, again the distribution does not concentrate well around this value and does not seem too different from the uniform prior.
+We run the ABC rejection algorithm with uniform priors on each of the parameters (over a reasonable range), $n=10,000$ simulations, and retain the proportion $p=0.005$ closest to the observed data. Hence, we retain 50 parameter sets to build our approximate posterior distributions, as illustrated by the histograms in Figure \ref{rej_abc_posteriors}. We see that the posteriors for $\delta$, $\zeta$ and $\Pi$ do not vary greatly from the uniform priors, and the posterior means are quite far from the true parameters. The posteriors for $\beta$ and $\rho$ are more interesting, and the posterior means seem to be closer to the true parameters; however, the posterior distributions do not concentrate well around the true parameters. Finally, for the parameter $\alpha$, the posterior mean almost exactly coincides with the true parameter; however, again the distribution does not concentrate well around this value and does not seem too different from the uniform prior.
 
 In order to compare the rejection ABC algorithm to ABC with SMC in the following section, we report the maximal (normalised) distance (tolerance level) $\epsilon$ from the accepted summary statistics to the observed data: we get a value of $\epsilon = 26.56$. We write functions to simulate from our model in both R and C++, before using the \texttt{ABC\_rejection} function from the \texttt{EasyABC} R package to run the algorithm. Using the R function, the algorithm took 13.30 seconds to run; whereas, using the C++ function, the algorithm took 7.11 seconds to run - nearly half the time.
 
 
-To illustrate how close our accepted simulations are to the observed data, Figure \ref{rej_abc_acc_simulations} shows a selection of 25 of the accepted simulations, alongside the observed dynamics. We can see that they vary quite greatly from the true data, indicating that the rejection ABC algorithms requires very large numbers of simulations in order to find the target parameter space. One can imagine that for a model that is more expensive to simulate from, this method would be too computationally expensive to be of any use. Figure \ref{rej_abc_sd} shows the mean $\pm$ one standard deviation alongside the observed trajectories. We can the that the accepted parameters tend to result in trajectories that underestimate both susceptibles and zombies.
+To illustrate how close our accepted simulations are to the observed data, Figure \ref{rej_abc_acc_simulations} shows a selection of 25 of the accepted simulations, alongside the observed dynamics. We can see that they vary quite greatly from the true data, indicating that the rejection ABC algorithm requires a very large number of simulations in order to sample from the target parameter space. One can imagine that for a model that is more expensive to simulate from, or when using a very wide prior, this method would be too computationally expensive to be of any use. Figure \ref{rej_abc_sd} shows the mean $\pm$ one standard deviation alongside the observed trajectories. We can see that the accepted parameters tend to result in trajectories that underestimate both susceptibles and zombies.
 
 \begin{figure}[H]
 	\centering
@@ -179,15 +180,13 @@ To illustrate how close our accepted simulations are to the observed data, Figur
 
 \section{Sequential Monte Carlo}
 
-Sequential Monte Carlo (SMC) methods applied to ABC are concerned with reducing the number of model runs in order to achieve a certain quality of posterior approximation. We have now seen that the simple ABC rejection algorithm is very computationally demanding, which often limits applications to simple models; the number of simulations required to sample the entire parameter space grows exponentially with the number of parameters \citep{RN32}. SMC methods aim to progressively approximate the posterior using a decreasing sequence of tolerance levels $\{\epsilon_1, ..., \epsilon_T\}$. The idea is to sample from areas of the parameter space with a higher likelihood, rather than systematically from the whole space, in order to gain computational efficiency.
-
-The basis of SMC algorithms is to construct a sequence of target distributions, that one propagates a set of particles through in order to move from the initial distribution to the final distribution. 
+Sequential Monte Carlo (SMC) methods applied to ABC are concerned with reducing the number of model runs in order to achieve a certain quality of posterior approximation. We have now seen that the simple ABC rejection algorithm is very computationally demanding, which often limits applications to simple models; the number of simulations required to sample the entire parameter space grows exponentially with the number of parameters \citep{RN32}. SMC methods aim to progressively approximate the posterior using a decreasing sequence of tolerance levels $\{\epsilon_1, ..., \epsilon_T\}$. The idea is to sample from areas of the parameter space with a higher likelihood, rather than systematically from the whole space, in order to gain computational efficiency. The basis of SMC algorithms is to construct a sequence of target distributions, that one propagates a set of particles through in order to move from the initial distribution to the final distribution. 
 
 \subsection{Population Monte Carlo}
 
 The first stage of the PMC ABC method of \cite{RN21} is identical to that of rejection ABC in Algorithm \ref{ABC Rejection}, giving the first stage approximation to the posterior distribution. One then resamples parameter values from a density kernel 
 $$ q(\theta) = \sum_{j=1}^{N} w_j^{(t-1)} K(\theta| \theta_{j}^{(t-1)};\tau_t^2),$$ 
-with $N$ being the number of samples in the first, and subsequent, iterations. A popular choice is a Gaussian kernel and \cite{RN21} shows that a good choice of $\tau$ is twice the empirical variance of the simulated parameters in the previous iteration. The bias that is induced by sampling from a proposal distribution, rather than the prior, is fixed by assigning an importance weight to each particle, as outlined in Algorithm \ref{PMC_ABC} below. 
+with $N$ being the number of samples in the first, and subsequent, iterations. A popular choice of $K$ is a Gaussian kernel and \cite{RN21} shows that a good choice of $\tau$ is twice the empirical variance of the simulated parameters in the previous iteration. The bias that is induced by sampling from a proposal distribution, rather than the prior, is fixed by assigning an importance weight to each particle, as outlined in Algorithm \ref{PMC_ABC} below. 
 
 
 \begin{algorithm}[h]
@@ -213,9 +212,9 @@ A drawback of this method is that it requires the user to pre-define a decreasin
 
 \subsection{Application to Zombie model}
 
-We apply the PMC-ABC algorithm using the \texttt{ABC\_sequential} function from the \texttt{EasyABC} package, setting \texttt{method="Beaumont"}. We set $N=50$ in Algorithm \ref{PMC ABC} and choose the sequence of tolerance levels to be $\{30, 10, 5, 1, 0.5\}$. The choice of the first tolerance level was informed by the epsilon value obtained from the rejection ABC algorithm (26.23): $\epsilon=30$ was chosen so that the first stage of the algorithm would not require too many simulations. 
+We apply the PMC-ABC algorithm using the \texttt{ABC\_sequential} function from the \texttt{EasyABC} package, setting \texttt{method="Beaumont"}. We set $N=50$ in Algorithm \ref{PMC_ABC} and choose the sequence of tolerance levels to be $\{30, 10, 5, 1, 0.5\}$. The choice of the first tolerance level was informed by the epsilon value obtained from the rejection ABC algorithm (26.23): $\epsilon=30$ was chosen so that the first stage of the algorithm would not require too many simulations. The subsequent tolerance levels were chosen through intuition and trial and error.
 
-Using our R function to simulate from the model, the algorithm required a total of 3768 simulations and took 2.19 seconds to run. The final maximum epsilon value of the accepted simulations was 0.484. This is nearly 7 times faster than the rejection ABC algorithm, and the accepted simulations are considerably closer ($\epsilon= 26.56$ in rejection ABC). Figure \ref{pmc_abc_acc_simulations} illustrates this well, showing 25 of the accepted trajectories; they are much closer to the observed trajectories, and seem to be equally distributed above and below. Figure \ref{pmc_abc_sd} shows that the mean of the accepted trajectories almost exactly coincides with the observed ones, and the standard deviation is much smaller than in the rejection ABC output.
+Using our R function to simulate from the model, the algorithm required a total of 3768 simulations and took 2.19 seconds to run. Using the C++ function, 3272 simulations were performed and the run-time was 0.81 seconds. The final maximum epsilon value of the accepted simulations was 0.484. This is nearly 7 times faster than the rejection ABC algorithm, and the accepted simulations are considerably closer ($\epsilon= 26.56$ in rejection ABC). Figure \ref{pmc_abc_acc_simulations} illustrates this well, showing 25 of the accepted trajectories; they are much closer to the observed trajectories, and seem to be equally distributed above and below. Figure \ref{pmc_abc_sd} shows that the mean of the accepted trajectories almost exactly coincides with the observed ones, and the standard deviation is much smaller than in the rejection ABC output.
 
 Finally, the posterior distributions for the model parameters, as shown in Figure \ref{pmc_abc_posteriors}, are much better than those obtained from rejection ABC. In particular, the posterior means for the parameters $\beta$, $\alpha$ and $\rho$ almost exactly coincide with the true parameters. The shape of the posterior distribution for these parameters has also certainly deviated from the uniform priors, looking almost Gaussian, centered at the true parameter values. The posteriors for $\delta$, $\zeta$ and $\Pi$ still look fairly uniform (as with rejection ABC), indicating that these parameters have less of an affect on the trajectories and hence are harder to estimate.
 
@@ -243,6 +242,14 @@ Finally, the posterior distributions for the model parameters, as shown in Figur
 \end{figure}
 
 \section{Conclusion}
+
+For a relatively basic zombie apocalypse model (essentially an epidemic model), with an intractable likelihood function, we have seen the limitations of using the simplest form of ABC algorithm. For more complex models, that are expensive to simulate from, involve stochasticity and have a larger parameter space, the effects of these limitations will be amplified greatly. 
+
+We have explored methods to mitigate these issues: sequential Monte Carlo (SMC) techniques and C++ programming have both proved fruitful. We implemented a simple SMC method based on population Monte Carlo, which capitalises on exploring the parameter space that resulted in simulations close to the observed data on previous iterations. Simulated from our model using a C++ function also resulted in significant reductions in algorithm run-times.
+
+Further improvements could be made through exploiting the `embarrassingly parallel' nature of ABC. However, we struggled to parallelise our code within the report's time constraints.
+
+Code for all the experiments conducted in this report can be found at  \url{https://github.com/hsansford1/zombie_project} .
 
 \bibliography{references}
 %

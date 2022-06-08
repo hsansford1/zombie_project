@@ -6,6 +6,7 @@ colours <- jcolors('pal3')
 library(scales)
 library(EasyABC)
 library(abc)
+library(parallel)
 
 ## Simulate 'true' epidemic data
 
@@ -96,6 +97,7 @@ ABC_rej_parallel_cpp$computime
 
 #sequence of tolerance levels:
 tolerance <- c(10, 5, 1, 0.5)
+tolerance <- c(30, 10, 5, 1, 0.5)
 #number of simulations to obtain below the tolerance level at each iteration:
 n <- 50
 
