@@ -142,16 +142,15 @@ In our case, the data $y_i$ is simulated from our model described in Section \re
 
 We run the ABC rejection algorithm with uniform priors on each of the parameters (over a reasonable range), $n=10,000$ simulations and retain the proportion $p=0.005$ closest to the observed data. Hence, we retain 50 parameter sets to build our approximate posterior distributions, as illustrated by the histograms in Figure \ref{rej_abc_posteriors}. We see that the posteriors for $\delta$, $\zeta$ and $\Pi$ do not vary greatly from the uniform priors, and the posterior means are quite far from the true parameters. The posteriors for $\beta$ and $\rho$ are slightly more interesting, and the posterior means seem to be closer to the true parameters; however, the posterior distributions do not concentrate well around the true parameters. Finally, for the parameter $\alpha$, the posterior mean almost exactly coincides with the true parameter; however, again the distribution does not concentrate well around this value and does not seem too different from the uniform prior.
 
-In order to compare the rejection ABC algorithm to ABC with SMC in the following section, we report the maximal (normalised) distance (tolerance level) $\epsilon$ from the accepted summary statistics to the observed data: we get a value of $\epsilon = 26.56$. We write functions to simulate from our model in both R and C++, before using the \texttt{ABC\_rejection} function from the \texttt{EasyABC} R package to run the algorithm. Using the R function, the algorithm took 13.30 seconds to run; whereas, using the C++ function, the algorithm took 7.11 seconds to run - nearly half the time!
+In order to compare the rejection ABC algorithm to ABC with SMC in the following section, we report the maximal (normalised) distance (tolerance level) $\epsilon$ from the accepted summary statistics to the observed data: we get a value of $\epsilon = 26.56$. We write functions to simulate from our model in both R and C++, before using the \texttt{ABC\_rejection} function from the \texttt{EasyABC} R package to run the algorithm. Using the R function, the algorithm took 13.30 seconds to run; whereas, using the C++ function, the algorithm took 7.11 seconds to run - nearly half the time.
 
 
-
-To illustrate how close our accepted simulations are to the observed data, Figure \ref{rej_abc_acc_simulations} show a selection of 25 of the accepted simulations, alongside the observed dynamics. We can see that they vary quite greatly from the true data, indicating that the rejection ABC algorithms requires very large numbers of simulations in order to find the target parameter space. One can imagine that for a more expensive model to simulate from, this method would be too computationally expensive to be of any use.
-
+To illustrate how close our accepted simulations are to the observed data, Figure \ref{rej_abc_acc_simulations} shows a selection of 25 of the accepted simulations, alongside the observed dynamics. We can see that they vary quite greatly from the true data, indicating that the rejection ABC algorithms requires very large numbers of simulations in order to find the target parameter space. One can imagine that for a model that is more expensive to simulate from, this method would be too computationally expensive to be of any use. Figure \ref{rej_abc_sd} shows the mean $\pm$ one standard deviation alongside the observed trajectories. We can the that the accepted parameters tend to result in trajectories that underestimate both susceptibles and zombies.
 
 \begin{figure}[H]
 	\centering
-	\includegraphics[width=1\linewidth]{../Figures/rejection_posteriors}
+	\vspace{-10pt}
+	\includegraphics[width=0.95\linewidth]{../Figures/rejection_posteriors}
 	\caption{The posterior distributions of the model parameters, attained from the ABC rejection algorithm, with $n=10,000$, $p=0.005$. The values of the true parameters are indicated by the red lines, while the posterior means are indicated by the green lines.}
 	\label{rej_abc_posteriors}
 \end{figure}
@@ -208,14 +207,11 @@ A drawback of this method is that it requires the user to pre-define a decreasin
 
 \subsection{Application to Zombie model}
 
+We apply the PMC-ABC algorithm using the \texttt{ABC\_sequential} function from the \texttt{EasyABC} package, setting \texttt{method="Beaumont"}. We set $N=50$ in Algorithm \ref{PMC ABC} and choose the sequence of tolerance levels to be $\{30, 10, 5, 1, 0.5\}$. The choice of the first tolerance level was informed by the epsilon value obtained from the rejection ABC algorithm (26.23): $\epsilon=30$ was chosen so that the first stage of the algorithm would not require too many simulations. 
 
-sequence of tolerance levels: $\{ 10, 5, 1, 0.5\}$
+Using our R function to simulate from the model, the algorithm required a total of 3768 simulations and took 2.19 seconds to run. The final maximum epsilon value of the accepted simulations was 0.484.
 
-no of simulations performed: 4096
 
-Compute time: 2.89 seconds
-
-max epsilon of accepted simulations: 0.489
 
 \begin{figure}[H]
 	\centering
