@@ -14,7 +14,7 @@ using namespace arma;
 //
 
 // [[Rcpp::export]]
-vec simulate_zombies_rcpp(vec& params) {
+std::vector<double> simulate_zombies_rcpp(vec& params) {
   
   double delta = params[0];
   double zeta = params[1];
@@ -55,11 +55,12 @@ vec simulate_zombies_rcpp(vec& params) {
   vec daily_S = S(idx);
   vec daily_Z = Z(idx);
   
-  return join_cols(daily_S, daily_Z);
+  vec dailies = join_cols(daily_S, daily_Z);
+  return as< std::vector<double> >(wrap(dailies));
 }
 
 // [[Rcpp::export]]
-vec simulate_zombies_seed_rcpp(vec& params) {
+std::vector<double> simulate_zombies_seed_rcpp(vec& params) {
   
   // arma_rng::set_seed(params[0]);
   double delta = params[1];
@@ -101,16 +102,17 @@ vec simulate_zombies_seed_rcpp(vec& params) {
   vec daily_S = S(idx);
   vec daily_Z = Z(idx);
   
-  return join_cols(daily_S, daily_Z);
+  vec dailies = join_cols(daily_S, daily_Z);
+  return as< std::vector<double> >(wrap(dailies));
 }
 
 // You can include R code blocks in C++ files processed with sourceCpp
 // (useful for testing and development). The R code will be automatically 
 // run after the compilation.
 //
-
-# /*** R
-# # t1 <- simulate_zombies_rcpp(rep(0.1,6))
-# # t2 <- simulate_zombies_seed_rcpp(rep(0.1,7))
-# # all.equal(t1, t2)
-# */
+// 
+// # /*** R
+// # t1 <- simulate_zombies_rcpp(rep(0.1,6))
+// # t2 <- simulate_zombies_seed_rcpp(rep(0.1,7))
+// # all.equal(t1, t2)
+// #  */
