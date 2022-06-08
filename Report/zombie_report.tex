@@ -39,7 +39,7 @@
 \maketitle
 
 \section{Introduction}
-Complex dynamic systems commensurate with ecology and epidemiology challenge conventional methods of statistical inference as oftentimes they have an intractable likelihood. On the other hand, simulating from the model given a parameter value may be relatively easy. Approximate Bayesian Computation (ABC) is a simulation-based inference method that enables the user to perform posterior inference by comparing simulated and observed data according to some distance metric.
+Complex dynamic systems commensurate with ecology and epidemiology challenge conventional methods of statistical inference as they often have an intractable likelihood. On the other hand, simulating from the model given a parameter value may be relatively easy. Approximate Bayesian Computation (ABC) is a simulation-based inference method that enables the user to perform posterior inference by comparing simulated and observed data according to some distance metric.
 
 %It is unlikely that any natural/environmental process under investigation can be captured without error and all natural/environmental systems invariably suffer process stochasticity. Consequently, model complexity increases in a non-trivial way as each realisation of the model is essentially unique. For chaotic models this is especially true as process stochasticity induces divergence of paths generated using identical parameters and starting from the same initial conditions (Fasiolo *et al*, 2016).
 
@@ -63,7 +63,7 @@ We consider four basic classes:
 	\item Removed ($R$)
 \end{itemize}
 
-Susceptible individuals can become deceased through `natural' causes (parameter $\delta$). Removed individuals are those that have died either through a zombie attack or from natural causes. If a human has died in a zombie attack they can resurrect and become a zombie (parameter $\zeta$). A Susceptible can become a zombie through transmission, i.e. an encounter with a zombie (parameter $\beta$). Zombies can, therefore, only come from two sources; either they are resurrected from the newly deceased or they are a susceptible that has become infected. Prior to becoming a zombie, there is a period of time for which a susceptible individual is infected before becoming a zombie (parameter $\rho$). Infected individuals can still die of natural causes before becoming a zombie, otherwise they become a zombie. The birth rate of the human population is assumed to constant, $\Pi$. Zombies can be defeated by removing the head or destroying the brain (parameter $\alpha$). These transitions between classes are summarised in Figure \ref{fig:flowchart}.
+Susceptible individuals can become deceased through `natural' causes (parameter $\delta$). Removed individuals are those that have died either through a zombie attack or from natural causes. If a human has died in a zombie attack they can resurrect and become a zombie (parameter $\zeta$). A susceptible person can become a zombie through transmission, i.e. an encounter with a zombie (parameter $\beta$). Zombies can, therefore, only come from two sources; either they are resurrected from the newly deceased or they are a susceptible that has become infected. Prior to becoming a zombie, there is a period of time for which a susceptible individual is infected before becoming a zombie (parameter $\rho$). Infected individuals can still die of natural causes before becoming a zombie, otherwise they become a zombie. The birth rate of the human population is assumed to be constant ($\Pi$). Zombies can be defeated by removing the head or destroying the brain (parameter $\alpha$). These transitions between classes are summarised in Figure \ref{fig:flowchart}.
 
 % ---- FLOWCHART ----
 \begin{figure}[b]
@@ -93,7 +93,7 @@ The 4-Class model is thus described mathematically by the following system of OD
 \[R' = \delta S + \alpha SZ - \zeta R\]
 Hence, there are six parameters that determine the model dynamics: 
 \begin{itemize}
-	\item $\delta$: background (non zombie related) death rate,
+	\item $\delta$: background (non-zombie-related) death rate,
 	\item $\zeta$: zombie resurrection rate,
 	\item $\beta$: zombie transmission rate,
 	\item $\alpha$: zombie destruction rate,
@@ -112,7 +112,7 @@ We pick the following parameter values to simulate our `true' zombie apocalypse 
 
 \section{Approximate Bayesian Computation}
 
-Likelihood-free inference methods are convenient for complex models, such as Epidemic models, where we do not have an explicit expression for the likelihood. In approximate Bayesian computation (ABC), simulation under the implicit model replaces computation of the likelihood. One can use simulations from the model for different parameter values to compare the simulated datasets with the observed data. These simulations are increasingly being used as training datasets for machine learning methods including deep neural networks \citep{RN6} and random forests \citep{RN8}. 
+Likelihood-free inference methods are convenient for complex models, such as epidemic models, where we do not have an explicit expression for the likelihood. In approximate Bayesian computation (ABC), simulation under the implicit model replaces computation of the likelihood. One can use simulations from the model for different parameter values to compare the simulated datasets with the observed data. These simulations are increasingly being used as training datasets for machine learning methods including deep neural networks \citep{RN6} and random forests \citep{RN8}. 
 
 The use of ABC first became popular in the field of population genetics, where simulation from a range of models is possible, but the likelihood is intractable for realistic sized datasets. \cite{RN57} were the first to use ABC, conducting inference on human demographic history. The method has now been applied in various subject areas including systems biology \citep{RN60}, climate modelling \citep{RN61}, astronomy \citep{RN62} and epidemiology \citep{RN10}.
 
@@ -149,7 +149,7 @@ In our case, the data $y_i$ are simulated from our model described in Section \r
 
 We run the ABC rejection algorithm with uniform priors on each of the parameters (over a reasonable range), $n=10,000$ simulations, and retain the proportion $p=0.005$ closest to the observed data. Hence, we retain 50 parameter sets to build our approximate posterior distributions, as illustrated by the histograms in Figure \ref{rej_abc_posteriors}. We see that the posteriors for $\delta$, $\zeta$ and $\Pi$ do not vary greatly from the uniform priors, and the posterior means are quite far from the true parameters. The posteriors for $\beta$ and $\rho$ are more interesting, and the posterior means seem to be closer to the true parameters; however, the posterior distributions do not concentrate well around the true parameters. Finally, for the parameter $\alpha$, the posterior mean almost exactly coincides with the true parameter; however, again the distribution does not concentrate well around this value and does not seem too different from the uniform prior.
 
-In order to compare the rejection ABC algorithm to ABC with SMC in the following section, we report the maximal (normalised) distance (tolerance level) $\epsilon$ from the accepted summary statistics to the observed data: we get a value of $\epsilon = 26.56$. We write functions to simulate from our model in both R and C++, before using the \texttt{ABC\_rejection} function from the \texttt{EasyABC} R package to run the algorithm. Using the R function, the algorithm took 13.30 seconds to run; whereas, using the C++ function, the algorithm took 7.11 seconds to run - nearly half the time.
+In order to compare the rejection ABC algorithm to ABC with SMC in the following section, we report the maximal (normalised) distance (tolerance level) $\epsilon$ from the accepted summary statistics to the observed data: we get a value of $\epsilon = 26.56$. We write functions to simulate from our model in both R and C++, before using the \texttt{ABC\_rejection} function from the \texttt{EasyABC} R package to run the algorithm. Using the R function, the algorithm took 13.30 seconds to run; whereas, using the C++ function, the algorithm took 7.11 seconds to run - nearly twice as fast.
 
 
 To illustrate how close our accepted simulations are to the observed data, Figure \ref{rej_abc_acc_simulations} shows a selection of 25 of the accepted simulations, alongside the observed dynamics. We can see that they vary quite greatly from the true data, indicating that the rejection ABC algorithm requires a very large number of simulations in order to sample from the target parameter space. One can imagine that for a model that is more expensive to simulate from, or when using a very wide prior, this method would be too computationally expensive to be of any use. Figure \ref{rej_abc_sd} shows the mean $\pm$ one standard deviation alongside the observed trajectories. We can see that the accepted parameters tend to result in trajectories that underestimate both susceptibles and zombies.
@@ -186,7 +186,7 @@ Sequential Monte Carlo (SMC) methods applied to ABC are concerned with reducing 
 
 The first stage of the PMC ABC method of \cite{RN21} is identical to that of rejection ABC in Algorithm \ref{ABC Rejection}, giving the first stage approximation to the posterior distribution. One then resamples parameter values from a density kernel 
 $$ q(\theta) = \sum_{j=1}^{N} w_j^{(t-1)} K(\theta| \theta_{j}^{(t-1)};\tau_t^2),$$ 
-with $N$ being the number of samples in the first, and subsequent, iterations. A popular choice of $K$ is a Gaussian kernel and \cite{RN21} shows that a good choice of $\tau$ is twice the empirical variance of the simulated parameters in the previous iteration. The bias that is induced by sampling from a proposal distribution, rather than the prior, is fixed by assigning an importance weight to each particle, as outlined in Algorithm \ref{PMC_ABC} below. 
+with $N$ being the number of samples in the first, and subsequent, iterations. A popular choice of $K$ is a Gaussian kernel, and \cite{RN21} shows that a good choice of $\tau$ is twice the empirical variance of the simulated parameters in the previous iteration. The bias that is induced by sampling from a proposal distribution, rather than the prior, is fixed by assigning an importance weight to each particle, as outlined in Algorithm \ref{PMC_ABC} below. 
 
 
 \begin{algorithm}[h]
@@ -208,7 +208,7 @@ with $N$ being the number of samples in the first, and subsequent, iterations. A
 \end{algorithm}	
 
 
-A drawback of this method is that it requires the user to pre-define a decreasing sequence of tolerance levels $\{\epsilon_1, ..., \epsilon_T\}$. A poor choice of sequence could detriment the possible benefits of the importance sampling procedure. In the population genetic example conducted by \cite{RN21}, $\epsilon_1$ is based on a preliminary simulation as the 0.1 quantile and they perform four iterations with $\epsilon_2 = 0.75\epsilon_1$, $\epsilon_3 = 0.9\epsilon_2$ and $\epsilon_4 = 0.9\epsilon_3$.
+A drawback of this method is that it requires the user to pre-define a decreasing sequence of tolerance levels $\{\epsilon_1, ..., \epsilon_T\}$. A poor choice of sequence could offset the possible benefits of the importance sampling procedure. In the population genetic example conducted by \cite{RN21}, $\epsilon_1$ is based on a preliminary simulation as the 0.1 quantile and they perform four iterations with $\epsilon_2 = 0.75\epsilon_1$, $\epsilon_3 = 0.9\epsilon_2$ and $\epsilon_4 = 0.9\epsilon_3$.
 
 \subsection{Application to Zombie model}
 
