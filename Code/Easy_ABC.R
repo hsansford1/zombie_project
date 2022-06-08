@@ -71,6 +71,24 @@ abc_rej <- abc(true_epidemic, ABC_rej$param, ABC_rej$stats, tol=1, method="rejec
 max(abc_rej$dist)
 #20.178
 
+
+# ADDITIONS --
+# -- REJECTION ABC w/ RCPP --
+# run ABC rejection algorithm
+ABC_rej_cpp <- ABC_rejection(model = simulate_zombies_rcpp, prior=priors, nb_simul=n, 
+                             summary_stat_target = true_epidemic, tol=p, progress_bar=TRUE)
+
+set.seed(1)
+ABC_rej_parallel_cpp <- ABC_rejection(model = simulate_zombies_seed_rcpp, prior=priors, nb_simul=n, 
+                                      summary_stat_target = true_epidemic, tol=p, progress_bar=TRUE,
+                                      n_cluster = 4, use_seed = TRUE)
+
+ABC_rej_cpp$computime
+
+ABC_rej_parallel_cpp$computime
+
+# END ADDITIONS --
+
 #------------------------------------------------------------------------------
 # SEQUENTIAL ABC (ABC-SMC)
 #--------------------------------------------------------------------------
@@ -113,3 +131,20 @@ plot_conf_bands(true_epidemic, t, ABC_Beaumont, title='Mean and confidence band 
 
 # plot mean +/- one standard deviation
 plot_sd_bands(true_epidemic, t, ABC_Beaumont, title='Mean and standard deviation from PMC-ABC')
+
+# ADDITIONS --
+# -- REJECTION ABC w/ RCPP --
+# run ABC rejection algorithm
+ABC_Beaumont_cpp <- ABC_sequential(method="Beaumont", model = simulate_zombies_rcpp, 
+                                   prior=priors, nb_simul=n, 
+                                   summary_stat_target = true_epidemic,
+                                   tolerance_tab=tolerance, progress_bar=TRUE, inside_prior = TRUE)
+
+set.seed(1)
+ABC_Beaumont_parallel_cpp <- ABC_sequential(method="Beaumont", model = simulate_zombies_seed_rcpp,
+                                            prior=priors, nb_simul=n, 
+                                            summary_stat_target = true_epidemic, 
+                                            tolerance_tab=tolerance, progress_bar=TRUE,
+                                            n_cluster = 4, use_seed = TRUE)
+
+# END ADDITIONS --
