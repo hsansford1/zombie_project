@@ -1,3 +1,4 @@
+Rcpp::sourceCpp('zomsim.cpp')
 source('zombie_simulator.R')
 source('plotting_functions.R')
 library(jcolors)
