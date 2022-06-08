@@ -38,12 +38,17 @@
 \maketitle
 
 \section{Introduction}
+Complex dynamic systems commensurate with ecology and epidemiology challenge conventional methods of statistical inference as oftentimes they have an intractable likelihood. On the other hand, simulating from the model given a parameter value may be relatively easy. Approximate Bayesian Computation (ABC) is a simulation-based inference method that enables the user to perform posterior inference by comparing simulated and observed data according to some distance metric.
 
-(General background info)Chaotic dynamic systems commensurate with ecology and epidemiology challenge conventional methods of statistical inference as oftentimes they have an intractable likelihood. It is unlikely that any natural/environmental process under investigation can be captured without error and all natural/environmental systems invariably suffer process stochasticity. Consequently, model complexity increases in a non-trivial way as each realisation of the model is essentially unique. For chaotic models this is especially true as process stochasticity induces divergence of paths generated using identical parameters and starting from the same initial conditions (Fasiolo *et al*, 2016).
+%It is unlikely that any natural/environmental process under investigation can be captured without error and all natural/environmental systems invariably suffer process stochasticity. Consequently, model complexity increases in a non-trivial way as each realisation of the model is essentially unique. For chaotic models this is especially true as process stochasticity induces divergence of paths generated using identical parameters and starting from the same initial conditions (Fasiolo *et al*, 2016).
 
-(Specific background Info) Zombies, particularly when instigating an apocalypse, exhibit just such chaotic behaviour. Their aim is to kill, eat and infect people via one or more bites, which leave an open wound with the zombie's saliva in and around it. This bodily fluid mixes with the blood, infecting the (previously susceptible) bitten individual and turns them into a zombie. Zombie apocalypses have been modelled on a number of previous occasions (Munz *et al*, ) but given the seriousness of such a situation it is important that no stone is left un-turned. 
+Zombies, particularly when instigating an apocalypse, exhibit just such chaotic behaviour. Their aim is to infect susceptible individuals via biting their target, resulting in the bitten individual turning into a zombie after some latent infection period. Zombie apocalypses have been modelled on a number of previous occasions with varying levels of complexity; however, most models result in an intractable likelihood.
 
-(A description of the gap in our knowledge that this study is designed to fill) Statistical methods capable of dealing effectively with highly non-linear systems are not a trivial matter. The simulation-based methods, Sequential Monte Carlo (SMC), Approximate Bayesian Computation (ABC) and Synthetic Likelihood (SL), offer a solution through estimating a posterior via simulated data sets based on sample parameters taken from the prior distribution. Utilising the computational efficiency of SMC, this report aims to compute a 4-Class zombie apocalypse model by approximating the posterior using a progressively decreasing sequence of tolerances. 
+%(Munz *et al*, ) but given the seriousness of such a situation it is important that no stone is left un-turned. 
+
+In this report we apply ABC to a zombie apocalypse model to estimate a posterior distribution for the parameters resulting in the `observed' apocalypse. Luckily, there is no real apocalypse data that could be used; hence, we decide on a model in advance and, selecting the `true' parameters for the model, we simulate our `observed' data. We utilise both sequential Monte-Carlo (SMC) techniques and C++ programming in order to improve the computational efficiency of ABC.
+
+%Statistical methods capable of dealing effectively with highly non-linear systems are not a trivial matter. The simulation-based methods, Sequential Monte Carlo (SMC), Approximate Bayesian Computation (ABC) and Synthetic Likelihood (SL), offer a solution through estimating a posterior via simulated data sets based on sample parameters taken from the prior distribution. Utilising the computational efficiency of SMC, this report aims to compute a 4-Class zombie apocalypse model by approximating the posterior using a progressively decreasing sequence of tolerances. 
 
 
 \section{Model}
@@ -149,7 +154,6 @@ To illustrate how close our accepted simulations are to the observed data, Figur
 
 \begin{figure}[H]
 	\centering
-	\vspace{-10pt}
 	\includegraphics[width=0.95\linewidth]{../Figures/rejection_posteriors}
 	\caption{The posterior distributions of the model parameters, attained from the ABC rejection algorithm, with $n=10,000$, $p=0.005$. The values of the true parameters are indicated by the red lines, while the posterior means are indicated by the green lines.}
 	\label{rej_abc_posteriors}
