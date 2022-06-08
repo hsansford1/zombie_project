@@ -245,7 +245,7 @@ Finally, the posterior distributions for the model parameters, as shown in Figur
 
 For a relatively basic zombie apocalypse model (essentially an epidemic model), with an intractable likelihood function, we have seen the limitations of using the simplest form of ABC algorithm. For more complex models, that are expensive to simulate from, involve stochasticity and have a larger parameter space, the effects of these limitations will be amplified greatly. 
 
-We have explored methods to mitigate these issues: sequential Monte Carlo (SMC) techniques and C++ programming have both proved fruitful. We implemented a simple SMC method based on population Monte Carlo, which capitalises on exploring the parameter space that resulted in simulations close to the observed data on previous iterations. Simulated from our model using a C++ function also resulted in significant reductions in algorithm run-times.
+We have explored methods to mitigate these issues: sequential Monte Carlo (SMC) techniques and C++ programming have both proved fruitful. We implemented a simple SMC method based on population Monte Carlo, which capitalises on exploring the parameter space that resulted in simulations close to the observed data on previous iterations. Simulating from our model using a C++ function also resulted in significant reductions in algorithm run-times.
 
 Further improvements could be made through exploiting the `embarrassingly parallel' nature of ABC. However, we struggled to parallelise our code within the report's time constraints.
 
